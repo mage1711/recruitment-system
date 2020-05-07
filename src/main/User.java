@@ -2,7 +2,7 @@ package main;
 
 import enums.AccountType;
 
-public class User {
+public class User implements Account {
     private String name;
     private String email;
     private AccountType type;
@@ -54,4 +54,9 @@ public class User {
     }
 
     public void sendNotification() {}
+
+    @Override
+    public void login() {
+
+    }
 }
