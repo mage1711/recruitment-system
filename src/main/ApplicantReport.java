@@ -4,13 +4,13 @@ import enums.ReportTypes;
 
 import java.util.Date;
 
-public class UserReport extends Report {
+public class ApplicantReport extends Report {
     private Applicant victimApplicant;
 
-    public UserReport() {
+    public ApplicantReport() {
     }
 
-    public UserReport(User reporter, String description, Date time, ReportTypes type, Applicant victimApplicant) {
+    public ApplicantReport(User reporter, String description, Date time, ReportTypes type, Applicant victimApplicant) {
         super(reporter, description, time, type);
         this.victimApplicant = victimApplicant;
     }
