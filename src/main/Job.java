@@ -17,6 +17,16 @@ public class Job {
     private City location;
     private Date postDate;
     private Company company;
+    private Recruiter recruiter;
+
+    public Recruiter getRecruiter() {
+        return recruiter;
+    }
+
+    public void setRecruiter(Recruiter recruiter) {
+        this.recruiter = recruiter;
+    }
+
     private int vacanciesCount;
 
     public Job() {
