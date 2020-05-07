@@ -4,7 +4,7 @@ import enums.ReportTypes;
 
 import java.util.Date;
 
-public class Report {
+public abstract class Report {
     private User reporter;
     private String description;
     private Date time;
