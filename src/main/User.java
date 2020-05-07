@@ -1,5 +1,6 @@
 package main;
 
+import enums.AccountState;
 import enums.AccountType;
 
 public class User implements Account {
@@ -7,6 +8,7 @@ public class User implements Account {
     private String email;
     private AccountType type;
     private NotifyBehaviour notifyBehaviour;
+    private AccountState accountState;
 
     public User() {
     }
@@ -54,6 +56,14 @@ public class User implements Account {
     }
 
     public void sendNotification() {}
+
+    public AccountState getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(AccountState accountState) {
+        this.accountState = accountState;
+    }
 
     @Override
     public void login() {
