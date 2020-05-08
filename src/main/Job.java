@@ -3,6 +3,7 @@ package main;
 import enums.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Job {
@@ -185,17 +186,74 @@ public class Job {
     }
 
     public static Job create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
-                             String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles, JobType jobType,
+                             String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles,
+                             JobType jobType,
                              String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
                              int vacanciesCount) {
         String query = "INSERT INTO `job` (`id`, `jobTitle`, `careerLevelNeeded`, `educationalLevelNeeded`, " +
                 "`jobRecruitements`, `jobDescription`, `jobType`, `salaryRange`, `cityId`, `postDate`, `companyId`, " +
                 "`recruiterId`, `vacanciesCount`) VALUES (NULL, '" + jobTitle + "', '" + careerLevelNeeded + "', '" +
                 educationalLevel + "', '" + jobRequirements + "', '" + jobDescription + "', '" + jobType + "', '" +
-                salaryRange + "', '" + Database.getCityId(location) + "', '" + postDate + "', '" + company.getId() + "', '" +
+                salaryRange + "', '" + Database.getCityId(
+                location) + "', '" + postDate + "', '" + company.getId() + "', '" +
                 recruiter.getId() + "', '" + vacanciesCount + "')";
         Database.query(query);
         return new Job();
     }
 
+    public static ArrayList<Job> getAll() {
+        String query = "SELECT * FROM job";
+        return getJobs(query);
+    }
+
+    public static ArrayList<Job> search(String term) {
+        String query = "SELECT * FROM job WHERE jobTitle LIKE '%" + term + "%'";
+        return getJobs(query);
+    }
+
+    private static ArrayList<Job> getJobs(String query) {
+        Database.init();
+        Database.query(query);
+        ArrayList<Job> jobs = new ArrayList<Job>();
+        Job currentJob;
+        var result = Database.getResult();
+        try {
+            while (result.next()) {
+                int id = result.getInt("id");
+                String jobTitle = result.getString("jobTitle");
+                String careerLevelNeededString = result.getString("careerLevelNeeded");
+                CareerLevel careerLevelNeeded = CareerLevel.valueOf(careerLevelNeededString);
+                String educationalLevelNeededString = result.getString("educationalLevelNeeded");
+                EducationalLevel educationalLevelNeeded = EducationalLevel.valueOf(educationalLevelNeededString);
+                String jobRequirements = result.getString("jobRecruitements");
+                String jobDescription = result.getString("jobDescription");
+                String jobTypeString = result.getString("jobType");
+                JobType jobType = JobType.valueOf(jobTypeString);
+                String salaryRange = result.getString("salaryRange");
+                int cityId = result.getInt("cityId");
+                City city = Database.getCityWithId(cityId);
+                Date postDate = result.getDate("postDate");
+                int companyId = result.getInt("companyId");
+                Company company = Company.getCompany(companyId);
+                int recruiterId = result.getInt("recruiterId");
+                Recruiter recruiter = Recruiter.getRecruiter(recruiterId);
+                int vacanciesCount = result.getInt("vacanciesCount");
+                currentJob = new Job(jobTitle, careerLevelNeeded, educationalLevelNeeded, jobRequirements,
+                                     jobDescription, new ArrayList<JobRole>(), jobType, salaryRange, city, postDate,
+                                     company, recruiter, vacanciesCount);
+                jobs.add(currentJob);
+            }
+        } catch (SQLException | NullPointerException throwables) {
+            throwables.printStackTrace();
+        }
+        return jobs;
+    }
+
+    public static void main(String args[]) {
+        var jobs = Job.getAll();
+
+        for (Job job : jobs) {
+            System.out.println(job.getJobTitle());
+        }
+    }
 }
