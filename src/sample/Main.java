@@ -31,9 +31,12 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Database.init();
-        Job job = Job.create("Test", CareerLevel.EntryLevel, EducationalLevel.Bachelor, "testhahahahhahahha",
-                "testhahahahahhahah", new ArrayList<>(), JobType.Freelance, "1000", City.Cairo,
-                new Date(new java.util.Date().getTime()), new Company(), new Recruiter(), 10);
+//        Job job = Job.create("Test", CareerLevel.EntryLevel, EducationalLevel.Bachelor, "testhahahahhahahha",
+//                "testhahahahahhahah", new ArrayList<>(), JobType.Freelance, "1000", City.Cairo,
+//                new Date(new java.util.Date().getTime()), new Company(), new Recruiter(), 10);
+        Job job = new Job();
+        job.setId(5);
+        job.delete();
         System.out.println(Database.getError());
         launch(args);
     }

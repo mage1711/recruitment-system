@@ -72,6 +72,14 @@ public class Job {
         this.vacanciesCount = vacanciesCount;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getJobTitle() {
         return jobTitle;
     }
@@ -168,7 +176,12 @@ public class Job {
         this.vacanciesCount = vacanciesCount;
     }
 
-    public void deleteJob() {
+    public void delete() {
+        String query = "DELETE FROM job WHERE id =" + this.id;
+        Database.query(query);
+        if (Database.getError() != null) {
+            System.out.println(Database.getError());
+        }
     }
 
     public static Job create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
@@ -184,4 +197,5 @@ public class Job {
         Database.query(query);
         return new Job();
     }
+
 }
