@@ -10,8 +10,8 @@ public class ApplicantReport extends Report {
     public ApplicantReport() {
     }
 
-    public ApplicantReport(User reporter, String description, Date time, ReportTypes type, Applicant victimApplicant) {
-        super(reporter, description, time, type);
+    public ApplicantReport(User reporter, String description, Date time, Applicant victimApplicant) {
+        super(reporter, description, time, ReportTypes.ReportOnApplicant);
         this.victimApplicant = victimApplicant;
     }
 

@@ -5,6 +5,7 @@ import enums.ReportTypes;
 import java.util.Date;
 
 public abstract class Report {
+    private int ID;
     private User reporter;
     private String description;
     private Date time;
@@ -18,6 +19,14 @@ public abstract class Report {
         this.description = description;
         this.time = time;
         this.type = type;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public User getReporter() {
