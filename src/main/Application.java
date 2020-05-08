@@ -1,6 +1,7 @@
 package main;
 
 import enums.ApplicationState;
+
 import java.sql.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class Application implements Subject {
-    private  int id;
+    private int id;
     private Applicant applicant;
     private Job job;
     private Date time;
@@ -17,16 +18,15 @@ public class Application implements Subject {
     private List<Observer> observers;
     //Semaphores – Restrict the number of threads that can access a resource.
     // Example, limit max 10 connections to access a file simultaneously.(MUTEX)
-    private final Object MUTEX= new Object();
+    private final Object MUTEX = new Object();
     private boolean changed;
-
 
 
     public Application() {
         Database.init();
     }
 
-    public Application(int id,Applicant applicant, Job job, Date time, ApplicationState state) {
+    public Application(int id, Applicant applicant, Job job, Date time, ApplicationState state) {
         this.applicant = applicant;
         this.job = job;
         this.time = time;
@@ -72,42 +72,42 @@ public class Application implements Subject {
         try {
             result.next();
             System.out.println(result.getString("state"));
-            newState=ApplicationState.valueOf(result.getString("state"));
+            newState = ApplicationState.valueOf(result.getString("state"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public void displayApplication() {
+    public ArrayList<Application> displayApplication() {
         ArrayList<Application> applications = new ArrayList<Application>();
         Database.query("select * from application");
         var result = Database.getResult();
         try {
             //TODO
-            while (result.next()){
-            System.out.println(result.getInt("id"));
-            System.out.println(result.getInt("applicantId"));
-            System.out.println(result.getInt("jobId"));
-            System.out.println(result.getDate("time"));
-            System.out.println(result.getString("state"));
-//            Application app= new Application(result.getInt("id"),result.getInt("applicantId"),result.getInt("jobId"),result.getDate("time"),ApplicationState.valueOf(result.getString("state")));
-//            applications.add(app);
+            while (result.next()) {
+               int appID=(result.getInt("id"));
+               int applicantID=(result.getInt("applicantId"));
+               int jobId=(result.getInt("jobId"));
+               System.out.println(result.getDate("time"));
+               System.out.println(result.getString("state"));
+               Application app = new Application(result.getInt("id"), Applicant.getApplicant(appID), Job.getJobs("select * from job where job =" + jobId).get(0), result.getDate("time"), ApplicationState.valueOf(result.getString("state")));
+               applications.add(app);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-//        return applications;
+        return applications;
     }
 
 
-    public  void commitToDatabase(){
+    public void commitToDatabase() {
 
     }
 
     @Override
     public void registerObserver(Observer obj) {
-        if(obj == null) throw new NullPointerException("Null Observer");
-        if(!observers.contains(obj)) observers.add(obj);
+        if (obj == null) throw new NullPointerException("Null Observer");
+        if (!observers.contains(obj)) observers.add(obj);
 
     }
 
@@ -124,7 +124,7 @@ public class Application implements Subject {
             if (!changed)
                 return;
             observersLocal = new ArrayList<>(this.observers);
-            this.changed=false;
+            this.changed = false;
         }
         for (Observer obj : observersLocal) {
             obj.update();
@@ -132,18 +132,20 @@ public class Application implements Subject {
 
 
     }
-   /* public void notifyObserverr() {
-        for (int j=0 ;j<observers.size();j++){
-            observers observer=(observers)observer.get(j);
-            observer.update();
-        }*/
+
+    /* public void notifyObserverr() {
+         for (int j=0 ;j<observers.size();j++){
+             observers observer=(observers)observer.get(j);
+             observer.update();
+         }*/
     public Object getUpdate(Observer obj) {
         return this.state;
     }
-    public void sendNotification(ApplicationState S){
-        System.out.println("Your State is:"+S);
-        this.state=S;
-        this.changed=true;
+
+    public void sendNotification(ApplicationState S) {
+        System.out.println("Your State is:" + S);
+        this.state = S;
+        this.changed = true;
         notifyObserver();
     }
 

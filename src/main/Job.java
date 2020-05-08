@@ -211,7 +211,7 @@ public class Job {
         return getJobs(query);
     }
 
-    private static ArrayList<Job> getJobs(String query) {
+    public static ArrayList<Job> getJobs(String query) {
         Database.init();
         Database.query(query);
         ArrayList<Job> jobs = new ArrayList<Job>();
@@ -248,6 +248,7 @@ public class Job {
         }
         return jobs;
     }
+
 
     public static void main(String args[]) {
         var jobs = Job.getAll();

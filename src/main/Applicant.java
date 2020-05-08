@@ -39,8 +39,8 @@ public class Applicant extends User implements Observer {
     }
 
     public Applicant(String name, String email, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
-                     Country currentCountry, City currentCity, Boolean locatingAbility, 
-                  ArrayList<JobType> targetJobTypes,
+                     Country currentCountry, City currentCity, Boolean locatingAbility,
+                     ArrayList<JobType> targetJobTypes,
                      ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
                      ArrayList<City> targetWorkCities, int experienceDuration,
                      EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees,
@@ -75,7 +75,7 @@ public class Applicant extends User implements Observer {
 
     @Override
     public void update(ApplicationState state) {
-        this.state=state;
+        this.state = state;
     }
 
     public void addApplication(Application application) {
@@ -83,19 +83,19 @@ public class Applicant extends User implements Observer {
     }
 
     public void addJobTypeTarget(JobType jobType) {
-        String query = "INSERT INTO applicantTargetJobTypes (`applicantId`,`jobType`) VALUES ("+this.getId()+","+jobType+")";
+        String query = "INSERT INTO applicantTargetJobTypes (`applicantId`,`jobType`) VALUES (" + this.getId() + "," + jobType + ")";
 
         Database.query(query);
     }
 
     public void addJobRoleTarget(JobRole jobRole) {
-        String query = "INSERT INTO applicantTargetJobRoles(`applicantId`,`jobRole`) VALUES ("+this.getId()+","+jobRole+")";
+        String query = "INSERT INTO applicantTargetJobRoles(`applicantId`,`jobRole`) VALUES (" + this.getId() + "," + jobRole + ")";
         Database.query(query);
     }
 
     public void addTargetCity(City city) {
 
-        int cityId =1;
+        int cityId = 1;
         String query = "UPDATE applicant set cityId = " + cityId + " Where email = " + this.getEmail();
         Database.query(query);
     }
@@ -144,32 +144,33 @@ public class Applicant extends User implements Observer {
 
     public void removeLanguage(Language language) {
     }
-    public static Applicant getApplicant (int id){
-        String query = "SELECT * from applicant where id = "+id;
+
+    public static Applicant getApplicant(int id) {
+        String query = "SELECT * from applicant where id = " + id;
         Database.query(query);
         var results = Database.getResult();
 
         try {
             results.next();
 
-          String name = results.getString("name");
+            String name = results.getString("name");
             String email = results.getString("email");
-            String password =results.getString("password");
-          File cv =  null;
+            String password = results.getString("password");
+            File cv = null;
 //                  results.getBlob("cv");
 
-         String nationality = results.getString("nationality");
-           int cityId =results.getInt("cityId");
-           boolean locatingAbility = results.getBoolean("locatingAbility");
-         int targetSalary = results.getInt("targetSalary");
-//           EducationalLevel currentEducationalLevel = EducationalLevel.valueOf(results.getString("currentEducationalLevel"));
+            String nationality = results.getString("nationality");
+            int cityId = results.getInt("cityId");
+            boolean locatingAbility = results.getBoolean("locatingAbility");
+            int targetSalary = results.getInt("targetSalary");
+//          EducationalLevel currentEducationalLevel = EducationalLevel.valueOf(results.getString("currentEducationalLevel"));
             String linkedInProfile = results.getString("linkedInProfile");
-           String githubProfile = results.getString("githubProfile");
-          String achievements =  results.getString("achievements");
-//           AccountState accountState = AccountState.valueOf(results.getString("accountState"));
+            String githubProfile = results.getString("githubProfile");
+            String achievements = results.getString("achievements");
+//          AccountState accountState = AccountState.valueOf(results.getString("accountState"));
             EducationalLevel currentEducationalLevel = EducationalLevel.Bachelor;
             AccountState accountState = AccountState.valueOf(results.getString("accountState"));
-            Applicant applicant = new Applicant(name,email,AccountType.Applicant,accountState,cv,null,nationality,Country.Egypt,City.Cairo,locatingAbility,null,null,targetSalary,null,0,currentEducationalLevel,null,null,null,null,linkedInProfile,githubProfile,achievements,null);
+            Applicant applicant = new Applicant(name, email, AccountType.Applicant, accountState, cv, null, nationality, Country.Egypt, City.Cairo, locatingAbility, null, null, targetSalary, null, 0, currentEducationalLevel, null, null, null, null, linkedInProfile, githubProfile, achievements, null);
 
             return applicant;
 
@@ -183,7 +184,7 @@ public class Applicant extends User implements Observer {
 
     public static void main(String[] args) {
         Database.init();
-    Applicant x =Applicant.getApplicant(1);
-    System.out.print(x.getEmail());
+        Applicant x = Applicant.getApplicant(1);
+        System.out.print(x.getEmail());
     }
 }
