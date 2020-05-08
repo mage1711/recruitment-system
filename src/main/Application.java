@@ -15,15 +15,13 @@ public class Application implements Subject {
     private Job job;
     private Date time;
     private ApplicationState state;
-    private List<Observer> observers;
-    //Semaphores – Restrict the number of threads that can access a resource.
-    // Example, limit max 10 connections to access a file simultaneously.(MUTEX)
-    private final Object MUTEX = new Object();
+    private ArrayList<Observer> observers;
     private boolean changed;
 
 
     public Application() {
         Database.init();
+        this.observers = new ArrayList<>();
     }
 
     public Application(int id, Applicant applicant, Job job, Date time, ApplicationState state) {
@@ -31,11 +29,19 @@ public class Application implements Subject {
         this.job = job;
         this.time = time;
         this.state = state;
-
+        this.observers = new ArrayList<>();
     }
 
     public Applicant getApplicant() {
         return applicant;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setApplicant(Applicant applicant) {
@@ -64,6 +70,7 @@ public class Application implements Subject {
 
     public void setState(ApplicationState state) {
         this.state = state;
+        this.notifyObservers();
     }
 
     public void changeState(ApplicationState newState) {
@@ -85,13 +92,16 @@ public class Application implements Subject {
         try {
             //TODO
             while (result.next()) {
-               int appID=(result.getInt("id"));
-               int applicantID=(result.getInt("applicantId"));
-               int jobId=(result.getInt("jobId"));
-               System.out.println(result.getDate("time"));
-               System.out.println(result.getString("state"));
-               Application app = new Application(result.getInt("id"), Applicant.getApplicant(appID), Job.getJobs("select * from job where job =" + jobId).get(0), result.getDate("time"), ApplicationState.valueOf(result.getString("state")));
-               applications.add(app);
+                int appID = (result.getInt("id"));
+                int applicantID = (result.getInt("applicantId"));
+                int jobId = (result.getInt("jobId"));
+                System.out.println(result.getDate("time"));
+                System.out.println(result.getString("state"));
+                Application app = new Application(result.getInt("id"), Applicant.getApplicant(appID),
+                                                  Job.getJobs("select * from job where job =" + jobId).get(0),
+                                                  result.getDate("time"),
+                                                  ApplicationState.valueOf(result.getString("state")));
+                applications.add(app);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -108,7 +118,6 @@ public class Application implements Subject {
     public void registerObserver(Observer obj) {
         if (obj == null) throw new NullPointerException("Null Observer");
         if (!observers.contains(obj)) observers.add(obj);
-
     }
 
     @Override
@@ -117,37 +126,9 @@ public class Application implements Subject {
     }
 
     @Override
-    public void notifyObserver() {
-        List<Observer> observersLocal = null;
-        //synchronization is used to make sure any observer registered after message is received is not notified
-        synchronized (MUTEX) {
-            if (!changed)
-                return;
-            observersLocal = new ArrayList<>(this.observers);
-            this.changed = false;
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
         }
-        for (Observer obj : observersLocal) {
-            obj.update();
-        }
-
-
     }
-
-    /* public void notifyObserverr() {
-         for (int j=0 ;j<observers.size();j++){
-             observers observer=(observers)observer.get(j);
-             observer.update();
-         }*/
-    public Object getUpdate(Observer obj) {
-        return this.state;
-    }
-
-    public void sendNotification(ApplicationState S) {
-        System.out.println("Your State is:" + S);
-        this.state = S;
-        this.changed = true;
-        notifyObserver();
-    }
-
-
 }
