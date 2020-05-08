@@ -6,7 +6,7 @@ import enums.AccountState;
 import enums.AccountType;
 
 import java.sql.SQLException;
-import java.text.CompactNumberFormat;
+
 import java.util.ArrayList;
 
 public class Recruiter extends User implements Observer {
@@ -18,6 +18,7 @@ public class Recruiter extends User implements Observer {
     public void update(ApplicationState state) {
 //        this.stat = state;
     }
+
     public Recruiter() {
     }
 
@@ -63,9 +64,9 @@ public class Recruiter extends User implements Observer {
             // TODO: Get jobs
             Company company = Company.getCompany(result.getInt("companyId"));
             recruiter = new Recruiter(result.getString("name"), result.getString("email"),
-                                                AccountType.Recruiter,
-                                                AccountState.valueOf(result.getString("accountState")), id,
-                                                new ArrayList<Job>(), company);
+                    AccountType.Recruiter,
+                    AccountState.valueOf(result.getString("accountState")), id,
+                    new ArrayList<Job>(), company);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

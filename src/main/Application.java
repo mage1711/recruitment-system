@@ -1,12 +1,13 @@
 package main;
 
+import enums.AccountState;
 import enums.ApplicationState;
 
 import java.sql.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 
 public class Application implements Subject {
@@ -23,7 +24,7 @@ public class Application implements Subject {
 
 
     public Application() {
-        Database.init();
+
     }
 
     public Application(int id, Applicant applicant, Job job, Date time, ApplicationState state) {
@@ -33,7 +34,13 @@ public class Application implements Subject {
         this.state = state;
 
     }
+    public Application(Applicant applicant, Job job, Date time, ApplicationState state) {
+        this.applicant = applicant;
+        this.job = job;
+        this.time = time;
+        this.state = state;
 
+    }
     public Applicant getApplicant() {
         return applicant;
     }
@@ -101,7 +108,15 @@ public class Application implements Subject {
 
 
     public void commitToDatabase() {
+        String query = "INSERT into application(applicantId, jobId, time, state)"+
+                "values("+this.getApplicant().getId()+","+1+",'"+new Date(new java.util.Date().getTime())+"','"+this.getState()+"')";
+        Database.query(query);
+        this.id = Database.getApplicationId(this.getApplicant().getId(),1);
 
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -127,7 +142,7 @@ public class Application implements Subject {
             this.changed = false;
         }
         for (Observer obj : observersLocal) {
-            obj.update();
+//            obj.update();
         }
 
 
@@ -149,5 +164,8 @@ public class Application implements Subject {
         notifyObserver();
     }
 
+    public static void main(String[] args) {
+Database.init();
 
+    }
 }
