@@ -81,14 +81,6 @@ public class Job {
         this.vacanciesCount = vacanciesCount;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getJobTitle() {
         return jobTitle;
     }

@@ -83,19 +83,20 @@ public class Application implements Subject {
         Database.query("select * from application");
         var result = Database.getResult();
         try {
+            //TODO
             while (result.next()){
             System.out.println(result.getInt("id"));
             System.out.println(result.getInt("applicantId"));
             System.out.println(result.getInt("jobId"));
             System.out.println(result.getDate("time"));
             System.out.println(result.getString("state"));
-            Application app= new Application(result.getInt("id"),result.getInt("applicantId"),result.getInt("jobId"),result.getDate("time"),ApplicationState.valueOf(result.getString("state")));
-            applications.add(app);
+//            Application app= new Application(result.getInt("id"),result.getInt("applicantId"),result.getInt("jobId"),result.getDate("time"),ApplicationState.valueOf(result.getString("state")));
+//            applications.add(app);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return applications;
+//        return applications;
     }
 
 

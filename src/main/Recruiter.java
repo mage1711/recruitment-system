@@ -16,7 +16,7 @@ public class Recruiter extends User implements Observer {
 
     @Override
     public void update(ApplicationState state) {
-        this.state = state;
+//        this.stat = state;
     }
     public Recruiter() {
     }

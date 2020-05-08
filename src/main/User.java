@@ -9,8 +9,7 @@ public class User implements Account {
     private String email;
     private AccountType type;
     private NotifyBehaviour notifyBehaviour;
-    private AccountState accountState;
-    private int id;
+    protected AccountState accountState;
 
     public User() {
     }
@@ -33,10 +32,6 @@ public class User implements Account {
 
     public String getName() {
         return name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void setName(String name) {
