@@ -2,10 +2,11 @@ package main;
 
 import enums.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Job {
+    private int id;
     private String jobTitle;
     private CareerLevel careerLevelNeeded;
     private EducationalLevel educationalLevel;
@@ -30,6 +31,45 @@ public class Job {
     private int vacanciesCount;
 
     public Job() {
+    }
+
+    public Job(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
+               String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles, JobType jobType,
+               String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
+               int vacanciesCount) {
+        this.jobTitle = jobTitle;
+        this.careerLevelNeeded = careerLevelNeeded;
+        this.educationalLevel = educationalLevel;
+        this.jobRequirements = jobRequirements;
+        this.jobDescription = jobDescription;
+        this.jobRoles = jobRoles;
+        this.jobType = jobType;
+        this.salaryRange = salaryRange;
+        this.location = location;
+        this.postDate = postDate;
+        this.company = company;
+        this.recruiter = recruiter;
+        this.vacanciesCount = vacanciesCount;
+    }
+
+    public Job(int id, String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
+               String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles, JobType jobType,
+               String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
+               int vacanciesCount) {
+        this.id = id;
+        this.jobTitle = jobTitle;
+        this.careerLevelNeeded = careerLevelNeeded;
+        this.educationalLevel = educationalLevel;
+        this.jobRequirements = jobRequirements;
+        this.jobDescription = jobDescription;
+        this.jobRoles = jobRoles;
+        this.jobType = jobType;
+        this.salaryRange = salaryRange;
+        this.location = location;
+        this.postDate = postDate;
+        this.company = company;
+        this.recruiter = recruiter;
+        this.vacanciesCount = vacanciesCount;
     }
 
     public String getJobTitle() {
@@ -128,5 +168,20 @@ public class Job {
         this.vacanciesCount = vacanciesCount;
     }
 
-    public void deleteJob() {}
+    public void deleteJob() {
+    }
+
+    public static Job create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
+                             String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles, JobType jobType,
+                             String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
+                             int vacanciesCount) {
+        String query = "INSERT INTO `job` (`id`, `jobTitle`, `careerLevelNeeded`, `educationalLevelNeeded`, " +
+                "`jobRecruitements`, `jobDescription`, `jobType`, `salaryRange`, `cityId`, `postDate`, `companyId`, " +
+                "`recruiterId`, `vacanciesCount`) VALUES (NULL, '" + jobTitle + "', '" + careerLevelNeeded + "', '" +
+                educationalLevel + "', '" + jobRequirements + "', '" + jobDescription + "', '" + jobType + "', '" +
+                salaryRange + "', '" + Database.getCityId(location) + "', '" + postDate + "', '" + company.getId() + "', '" +
+                recruiter.getId() + "', '" + vacanciesCount + "')";
+        Database.query(query);
+        return new Job();
+    }
 }

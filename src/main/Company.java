@@ -7,6 +7,7 @@ import enums.EmployeesAmount;
 import java.util.ArrayList;
 
 public class Company {
+    private int id;
     private String overview;
     private EmployeesAmount employeesAmount;
     private ArrayList<Job> jobs;
@@ -26,6 +27,14 @@ public class Company {
         this.field = field;
         this.locations = locations;
         this.website = website;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getOverview() {
