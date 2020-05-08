@@ -60,7 +60,7 @@ public class JobRequest implements Subject {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObservers() {
 
     }
 }

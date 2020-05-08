@@ -10,9 +10,9 @@ public class main {
     public static void main(String[] args) {
 
         Admin admin = new Admin();
-        Recruiter r = new Recruiter();
-        r.setID(1);
-        admin.banUser(r);
+        AccountRequest r = new AccountRequest();
+        r.setId(1);
+        admin.rejectAccountRequest(r);
 
     }
 }
