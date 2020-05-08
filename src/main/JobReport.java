@@ -10,8 +10,8 @@ public class JobReport extends Report {
     public JobReport() {
     }
 
-    public JobReport(User reporter, String description, Date time, ReportTypes type, Job victimJob) {
-        super(reporter, description, time, type);
+    public JobReport(User reporter, String description, Date time, Job victimJob) {
+        super(reporter, description, time, ReportTypes.ReportOnJobPost);
         this.victimJob = victimJob;
     }
 

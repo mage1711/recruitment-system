@@ -14,11 +14,6 @@ public class Recruiter extends User implements Observer {
     private ArrayList<Job> jobs;
     private Company company;
 
-    @Override
-    public void update(ApplicationState state) {
-//        this.stat = state;
-    }
-
     public Recruiter() {
     }
 
@@ -28,9 +23,7 @@ public class Recruiter extends User implements Observer {
         this.id = id;
         this.jobs = jobs;
         this.company = company;
-    }
-
-    public void update() {
+        this.notifyBehaviour = new NotifyRecruiter();
     }
 
     public int getId() {
@@ -39,6 +32,11 @@ public class Recruiter extends User implements Observer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void sendNotification(Object o) {
+        this.notifyBehaviour.sendNotification(o);
     }
 
     public void isApproved() {
@@ -73,4 +71,8 @@ public class Recruiter extends User implements Observer {
         return recruiter;
     }
 
+    @Override
+    public void update(Object updatedObject) {
+        this.sendNotification(updatedObject);
+    }
 }

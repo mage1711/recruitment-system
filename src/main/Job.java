@@ -201,6 +201,16 @@ public class Job {
         return new Job();
     }
 
+    public static Job getJobWithId(int id) {
+        String query = "SELECT * FROM job WHERE id=" + id;
+        Job job = null;
+        var result = getJobs(query);
+        if (result.size() > 0) {
+            job = result.get(0);
+        }
+        return job;
+    }
+
     public static ArrayList<Job> getAll() {
         String query = "SELECT * FROM job";
         return getJobs(query);

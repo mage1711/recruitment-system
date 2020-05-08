@@ -3,17 +3,26 @@ package main;
 import java.util.Date;
 
 public class JobRequest implements Subject {
+    private int ID;
     private Job job;
     private Date time;
-    private Boolean approved;
+    private int approved;
 
     public JobRequest() {
     }
 
-    public JobRequest(Job job, Date time, Boolean approved) {
+    public JobRequest(Job job, Date time, int approved) {
         this.job = job;
         this.time = time;
         this.approved = approved;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Job getJob() {
@@ -32,11 +41,11 @@ public class JobRequest implements Subject {
         this.time = time;
     }
 
-    public Boolean getApproved() {
+    public int getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public void setApproved(int approved) {
         this.approved = approved;
     }
 
@@ -51,7 +60,7 @@ public class JobRequest implements Subject {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObservers() {
 
     }
 }

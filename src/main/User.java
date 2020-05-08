@@ -3,12 +3,12 @@ package main;
 import enums.AccountState;
 import enums.AccountType;
 
-public class User implements Account {
+public abstract class User implements Account {
     private int id;
     private String name;
     private String email;
     private AccountType type;
-    private NotifyBehaviour notifyBehaviour;
+    protected NotifyBehaviour notifyBehaviour;
     protected AccountState accountState;
 
     public User() {
@@ -66,7 +66,7 @@ public class User implements Account {
         this.notifyBehaviour = notifyBehaviour;
     }
 
-    public void sendNotification() {}
+    public abstract void sendNotification(Object o);
 
     public AccountState getAccountState() {
         return accountState;

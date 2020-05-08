@@ -3,7 +3,6 @@ package main;
 import enums.*;
 
 import java.io.File;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +33,6 @@ public class Applicant extends User implements Observer {
     private String githubProfile;
     private String achievements;
     private ArrayList<Job> savedJobs;
-    private ApplicationState state;
 
     public Applicant() {
     }
@@ -86,8 +84,6 @@ public class Applicant extends User implements Observer {
                      ArrayList<Language> languages, String linkedInProfile, String githubProfile,
                      String achievements, ArrayList<Job> savedJobs) {
         super(name, email, type, accountState);
-        this.birthDate = birthDate;
-        this.gender = gender;
         this.CV = CV;
         this.applications = applications;
         this.nationality = nationality;
@@ -109,18 +105,25 @@ public class Applicant extends User implements Observer {
         this.githubProfile = githubProfile;
         this.achievements = achievements;
         this.savedJobs = savedJobs;
-
-
-            this.commitToDatabase(password);
-            int id = Database.getApplicantId(this.getEmail());
-            this.setId(id);
-
-
+        this.notifyBehaviour = new NotifyApplicant();
     }
 
     @Override
-    public void update(ApplicationState state) {
-        this.state = state;
+    public void update(Object object) {
+        Application updatedApplication = (Application) object;
+        for (var application : applications) {
+            if (application.getId() == updatedApplication.getId()) {
+                applications.remove(application);
+                applications.add(updatedApplication);
+                this.sendNotification(updatedApplication);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void sendNotification(Object updatedApplication) {
+        this.notifyBehaviour.sendNotification(updatedApplication);
     }
 
     public void commitToDatabase(String password) {
@@ -137,7 +140,7 @@ public class Applicant extends User implements Observer {
     }
 
     public void addApplication(Application application) {
-        application.commitToDatabase();
+        applications.add(application);
     }
 
     public void addJobTypeTarget(JobType jobType) {
