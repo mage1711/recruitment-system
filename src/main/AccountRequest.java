@@ -3,17 +3,28 @@ package main;
 import java.util.Date;
 
 public class AccountRequest implements Subject {
+    private int ID;
     private Recruiter account;
     private Date time;
-    private Boolean approved;
+    private int approved;
 
     public AccountRequest() {
     }
 
-    public AccountRequest(Recruiter account, Date time, Boolean approved) {
+    public AccountRequest(int ID ,Recruiter account, Date time, int approved) {
+        this.ID = ID;
         this.account = account;
         this.time = time;
         this.approved = approved;
+    }
+
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Recruiter getAccount() {
@@ -32,11 +43,11 @@ public class AccountRequest implements Subject {
         this.time = time;
     }
 
-    public Boolean getApproved() {
+    public int getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public void setApproved(int approved) {
         this.approved = approved;
     }
 

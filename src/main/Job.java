@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Job {
+    private int ID;
     private String jobTitle;
     private CareerLevel careerLevelNeeded;
     private EducationalLevel educationalLevel;
@@ -18,6 +19,14 @@ public class Job {
     private Date postDate;
     private Company company;
     private Recruiter recruiter;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public Recruiter getRecruiter() {
         return recruiter;
