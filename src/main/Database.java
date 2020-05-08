@@ -4,31 +4,39 @@ package main;
 import java.sql.*;
 
 public class Database {
-    private static String user = "admin";
-    private static String password = "admin";
-    private static String name = "test";
+    private static final String user = "islamelb_recruitement_system";
+    private static final String password = "FydL5LYELVYvHK7";
+    private static final String name = "islamelb_recruitement_system";
+    private static final String params = "?serverTimezone=UTC";
     private static Connection myConn;
     private static ResultSet result;
+    private static String error;
 
-    public static void init(){
+    public static void init() {
         try {
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "admin", "admin");
-            Statement myStmt = myConn.createStatement();
-
+            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name + params, user, password);
         } catch (Exception exc) {
-            exc.printStackTrace();
+            Database.error = exc.toString();
         }
     }
-    public static void Query(String query){
+
+    public static void query(String query) {
         try {
             Statement myStmt = myConn.createStatement();
-            result = myStmt.executeQuery(query);
-        }
-        catch (Exception exc) {
-            exc.printStackTrace();
+            if (myStmt.getFetchSize() > 0) {
+                result = myStmt.executeQuery(query);
+            }
+        } catch (NullPointerException | SQLException exc) {
+            result = null;
+            Database.error = exc.toString();
         }
     }
-    public static  ResultSet GetResult(){
+
+    public static ResultSet getResult() {
         return result;
+    }
+
+    public static String getError() {
+        return error;
     }
 }
