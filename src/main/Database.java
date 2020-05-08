@@ -14,7 +14,7 @@ public class Database {
 
     public static void init() {
         try {
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name + params, user, password);
+            myConn = DriverManager.getConnection("jdbc:mysql://islamelbanna.info:3306/" + name + params, user, password);
         } catch (Exception exc) {
             Database.error = exc.toString();
         }
