@@ -72,7 +72,8 @@ public class Applicant extends User implements Observer {
     }
 
     @Override
-    public void update(Application updatedApplication) {
+    public void update(Object object) {
+        Application updatedApplication = (Application) object;
         for (var application : applications) {
             if (application.getId() == updatedApplication.getId()) {
                 applications.remove(application);
