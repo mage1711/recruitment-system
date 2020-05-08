@@ -37,8 +37,17 @@ public class Applicant extends User implements Observer {
     public Applicant() {
     }
 
-    public Applicant(String name, String email, AccountType type, Date birthDate, String gender, File CV, ArrayList<Application> applications, String nationality, Country currentCountry, City currentCity, Boolean locatingAbility, String mobileNumber, CareerLevel careerLevel, ArrayList<JobType> targetJobTypes, ArrayList<JobRole> targetJobRoles, int minSalaryTarget, ArrayList<City> targetWorkCities, int experienceDuration, EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees, ArrayList<Certification> certifications, ArrayList<String> skills, ArrayList<Language> languages, String linkedInProfile, String githubProfile, String achievements, ArrayList<Job> savedJobs) {
-        super(name, email, type);
+    public Applicant(String name, String email, AccountType type, AccountState accountState, Date birthDate,
+                     String gender, File CV, ArrayList<Application> applications, String nationality,
+                     Country currentCountry, City currentCity, Boolean locatingAbility, String mobileNumber,
+                     CareerLevel careerLevel, ArrayList<JobType> targetJobTypes,
+                     ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
+                     ArrayList<City> targetWorkCities, int experienceDuration,
+                     EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees,
+                     ArrayList<Certification> certifications, ArrayList<String> skills,
+                     ArrayList<Language> languages, String linkedInProfile, String githubProfile,
+                     String achievements, ArrayList<Job> savedJobs) {
+        super(name, email, type, accountState);
         this.birthDate = birthDate;
         this.gender = gender;
         this.CV = CV;

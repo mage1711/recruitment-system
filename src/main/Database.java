@@ -49,8 +49,7 @@ public class Database {
 
     public static int getCityId(City city) {
         String query = "SELECT id FROM city WHERE city = '" + city + "'";
-        System.out.println(query);
-        query(query);
+        Database.query(query);
         try {
             result.next();
             return result.getInt("id");
@@ -58,5 +57,19 @@ public class Database {
             Database.error = exc.getMessage();
         }
         return -1;
+    }
+
+    public static City getCityWithId(int id) {
+        String query = "SELECT city FROM city WHERE id=" + id;
+        Database.query(query);
+        City city = null;
+        try {
+            result.next();
+            String cityString = result.getString("city");
+            city = City.valueOf(cityString);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return city;
     }
 }
