@@ -32,6 +32,7 @@ public class Applicant extends User implements Observer {
     private String githubProfile;
     private String achievements;
     private ArrayList<Job> savedJobs;
+    private ApplicationState state;
 
     public Applicant() {
     }
@@ -65,7 +66,9 @@ public class Applicant extends User implements Observer {
     }
 
     @Override
-    public void update() {}
+    public void update(ApplicationState state) {
+        this.state=state;
+    }
 
     public void addApplication(Application application) {
         application.commitToDatabase();

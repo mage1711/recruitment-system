@@ -26,6 +26,7 @@ public class Database {
 
     public static void query(String query) {
         try {
+
             Statement myStmt = myConn.createStatement();
             if (query.contains("select") || query.contains("SELECT")) {
                 result = myStmt.executeQuery(query);

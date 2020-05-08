@@ -1,7 +1,9 @@
 package main;
 
 public interface Subject {
-    void registerObserver();
-    void removeObserver();
+    void registerObserver(Observer obj);
+    void removeObserver(Observer obj);
     void notifyObserver();
+
+
 }

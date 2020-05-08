@@ -5,4 +5,5 @@ public class NotifyRecruiter implements NotifyBehaviour {
     public void sendNotification() {
 
     }
+
 }

@@ -1,5 +1,7 @@
 package main;
 
+import enums.ApplicationState;
+
 import java.util.ArrayList;
 
 public class Recruiter extends User implements Observer {
@@ -7,8 +9,12 @@ public class Recruiter extends User implements Observer {
     private ArrayList<Job> jobs;
     private Company company;
     private boolean accountApproved;
+    private ApplicationState state;
 
-    public void update() {}
+    @Override
+    public void update(ApplicationState state) {
+        this.state=state;
+    }
 
     public int getId() {
         return id;
@@ -18,14 +24,23 @@ public class Recruiter extends User implements Observer {
         this.id = id;
     }
 
-    public void isApproved() {}
 
-    public void addJob(Job job) {}
+    /*public void update(ApplicationState state) {
+       this.state = state;
+    }
+    */
+    public void isApproved() {
+    }
 
-    public void removeJob(Job job) {}
+    public void addJob(Job job) {
+    }
+
+    public void removeJob(Job job) {
+    }
 
     public ArrayList<Job> getOpenJobs() {
         return new ArrayList<>();
     }
+
 
 }

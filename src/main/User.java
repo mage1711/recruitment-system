@@ -9,6 +9,7 @@ public class User implements Account {
     private AccountType type;
     private NotifyBehaviour notifyBehaviour;
     private AccountState accountState;
+    private int id;
 
     public User() {
     }
@@ -17,6 +18,15 @@ public class User implements Account {
         this.name = name;
         this.email = email;
         this.type = type;
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -3,6 +3,7 @@ package main;
 import enums.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Job {
@@ -19,6 +20,14 @@ public class Job {
     private Date postDate;
     private Company company;
     private Recruiter recruiter;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Recruiter getRecruiter() {
         return recruiter;
@@ -184,4 +193,41 @@ public class Job {
         Database.query(query);
         return new Job();
     }
+
+    public void getAllJobs() {
+        ArrayList<Job> jobs = new ArrayList<Job>();
+        Database.query("select * from job");
+        var result = Database.getResult();
+        try {
+            while (result.next()) {
+                System.out.println(result.getInt("id"));
+                System.out.println(result.getString("jobTitle"));
+                System.out.println(result.getString("careerLevelNeeded"));
+                System.out.println(result.getString("educationalLevelNeeded"));
+                System.out.println(result.getString("jobRecruitements"));
+                System.out.println(result.getString("jobDescription"));
+                System.out.println(result.getString("jobType"));
+                System.out.println(result.getString("salaryRange"));
+                System.out.println(result.getString("cityId"));
+                System.out.println(result.getDate("postDate"));
+                System.out.println(result.getInt("companyId"));
+                System.out.println(result.getInt("recruiterId"));
+                System.out.println(result.getString("vacanciesCount"));
+                System.out.println(result.getString("state"));
+                jobs.add(new Job());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void selectJobs(int id) {
+        Database.query("select * from job where id = " + id);
+
+    }
+
+
+
 }
+
+
