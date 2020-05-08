@@ -8,7 +8,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class UserFactory {
-    public User createUser(AccountType type) {
+    private AccountType type;
+
+    public UserFactory() {
+    }
+
+    public UserFactory(AccountType type) {
+        this.type = type;
+    }
+
+    public User createUser() {
         if (type == AccountType.Recruiter) {
             return new Recruiter();
         } else if (type == AccountType.Applicant) {
