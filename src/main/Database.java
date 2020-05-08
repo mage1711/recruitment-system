@@ -2,9 +2,12 @@ package main;
 
 
 import enums.City;
+import enums.JobRole;
+import enums.JobType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
     private static final String host = "jdbc:mysql://islamelbanna.info:3306/";
@@ -72,4 +75,84 @@ public class Database {
         }
         return city;
     }
+    public static  int getApplicantId(String email){
+        String query = "SELECT id from applicant where email = "+"'"+email+"'";
+        Database.query(query);
+        try {
+            result.next();
+            return result.getInt("id");
+        } catch (SQLException exc) {
+            Database.error = exc.getMessage();
+        }
+        return -1;
+    }
+    public static String getApplicantPassword(String email){
+        String query = "SELECT password from applicant where email = "+"'"+email+"'";
+        Database.query(query);
+        try {
+            result.next();
+            return result.getString("password");
+        } catch (SQLException exc) {
+            Database.error = exc.getMessage();
+        }
+        return "";
+    }
+    public static ArrayList<JobType> getJobTypes(int id,String table){
+        String query = "SELECT * from"+ table+" where applicantId = " +id;
+        Database.query(query);
+        ArrayList<JobType> jobTypes = new ArrayList<>();
+        if (result != null) {
+            try {
+                System.out.print(result.next());
+                while (result.next()) {
+
+
+                    System.out.print(result.getString("jobType"));
+                    jobTypes.add(JobType.valueOf(result.getString("jobType")));
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return  jobTypes;
+    }
+    public static ArrayList<JobRole> getJobRole(int id, String table){
+        String query = "SELECT * from"+ table+" where applicantId = " +id;
+        Database.query(query);
+        ArrayList<JobRole> jobRoles = new ArrayList<>();
+        if (result != null) {
+            try {
+                while (result.next()) {
+                    System.out.print(result.getString("jobRole"));
+                    jobRoles.add(JobRole.valueOf(result.getString("jobType")));
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return  jobRoles;
+    }
+    public static void deleteApplicant(String email){
+        String query = "DELETE FROM applicant Where email = " +"'"+email+"'";
+        Database.query(query);
+    }
+    public static void deleteApplication(int id){
+        String query = "DELETE FROM application Where id = " +id;
+        Database.query(query);
+    }
+    public static  int getApplicationId(int applicantId,int jobId){
+        String query = "SELECT id from application where applicantId ="+applicantId+" and  jobId = "+jobId;
+        Database.query(query);
+        try {
+            result.next();
+            return result.getInt("id");
+        } catch (SQLException exc) {
+            Database.error = exc.getMessage();
+        }
+        return -1;
+    }
+
+
 }

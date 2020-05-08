@@ -6,7 +6,7 @@ import enums.AccountState;
 import enums.AccountType;
 
 import java.sql.SQLException;
-import java.text.CompactNumberFormat;
+
 import java.util.ArrayList;
 
 public class Recruiter extends User implements Observer {
