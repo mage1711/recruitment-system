@@ -10,14 +10,25 @@ public class User implements Account {
     private AccountType type;
     private NotifyBehaviour notifyBehaviour;
     private AccountState accountState;
+    private int id;
 
     public User() {
     }
 
-    public User(String name, String email, AccountType type) {
+    public User(String name, String email, AccountType type, AccountState accountState) {
         this.name = name;
         this.email = email;
         this.type = type;
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+        this.accountState = accountState;
     }
 
     public String getName() {
@@ -71,7 +82,7 @@ public class User implements Account {
     }
 
     @Override
-    public void login() {
+    public void login(String email, String password) {
 
     }
 }

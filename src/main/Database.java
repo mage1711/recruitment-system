@@ -1,6 +1,9 @@
 package main;
 
 
+import enums.City;
+
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 
 public class Database {
@@ -17,19 +20,22 @@ public class Database {
         try {
             myConn = DriverManager.getConnection(host + name + params, user, password);
         } catch (Exception exc) {
-            Database.error = exc.toString();
+            Database.error = exc.getMessage();
         }
     }
 
     public static void query(String query) {
         try {
+
             Statement myStmt = myConn.createStatement();
-
+            if (query.contains("select") || query.contains("SELECT")) {
                 result = myStmt.executeQuery(query);
-
+            } else {
+                myStmt.executeUpdate(query);
+            }
         } catch (NullPointerException | SQLException exc) {
             result = null;
-            Database.error = exc.toString();
+            Database.error = exc.getMessage();
         }
     }
 
@@ -39,5 +45,31 @@ public class Database {
 
     public static String getError() {
         return error;
+    }
+
+    public static int getCityId(City city) {
+        String query = "SELECT id FROM city WHERE city = '" + city + "'";
+        Database.query(query);
+        try {
+            result.next();
+            return result.getInt("id");
+        } catch (SQLException exc) {
+            Database.error = exc.getMessage();
+        }
+        return -1;
+    }
+
+    public static City getCityWithId(int id) {
+        String query = "SELECT city FROM city WHERE id=" + id;
+        Database.query(query);
+        City city = null;
+        try {
+            result.next();
+            String cityString = result.getString("city");
+            city = City.valueOf(cityString);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return city;
     }
 }

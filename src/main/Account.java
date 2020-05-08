@@ -1,5 +1,5 @@
 package main;
 
 public interface Account {
-    void login();
+    void login(String email, String password);
 }

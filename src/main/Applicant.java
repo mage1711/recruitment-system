@@ -33,14 +33,23 @@ public class Applicant extends User implements Observer {
     private String githubProfile;
     private String achievements;
     private ArrayList<Job> savedJobs;
+    private ApplicationState state;
 
     public Applicant() {
     }
 
-
-
-    public Applicant(String name, String email, AccountType type,  File CV, ArrayList<Application> applications, String nationality, Country currentCountry, City currentCity, Boolean locatingAbility, ArrayList<JobType> targetJobTypes, ArrayList<JobRole> targetJobRoles, int minSalaryTarget, ArrayList<City> targetWorkCities, int experienceDuration, EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees, ArrayList<Certification> certifications, ArrayList<Language> languages, String linkedInProfile, String githubProfile, String achievements, ArrayList<Job> savedJobs) {
-        super(name, email, type);
+    public Applicant(String name, String email, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
+                     Country currentCountry, City currentCity, Boolean locatingAbility, 
+                  ArrayList<JobType> targetJobTypes,
+                     ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
+                     ArrayList<City> targetWorkCities, int experienceDuration,
+                     EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees,
+                     ArrayList<Certification> certifications, ArrayList<String> skills,
+                     ArrayList<Language> languages, String linkedInProfile, String githubProfile,
+                     String achievements, ArrayList<Job> savedJobs) {
+        super(name, email, type, accountState);
+        this.birthDate = birthDate;
+        this.gender = gender;
         this.CV = CV;
         this.applications = applications;
         this.nationality = nationality;
@@ -65,7 +74,8 @@ public class Applicant extends User implements Observer {
     }
 
     @Override
-    public void update() {
+    public void update(ApplicationState state) {
+        this.state=state;
     }
 
     public void addApplication(Application application) {
@@ -159,7 +169,7 @@ public class Applicant extends User implements Observer {
 //           AccountState accountState = AccountState.valueOf(results.getString("accountState"));
             EducationalLevel currentEducationalLevel = EducationalLevel.Bachelor;
             AccountState accountState = AccountState.valueOf(results.getString("accountState"));
-            Applicant applicant = new Applicant(name,email,AccountType.Applicant,cv,null,nationality,Country.Egypt,City.Cairo,locatingAbility,null,null,targetSalary,null,0,currentEducationalLevel,null,null,null,linkedInProfile,githubProfile,achievements,null);
+            Applicant applicant = new Applicant(name,email,AccountType.Applicant,accountState,cv,null,nationality,Country.Egypt,City.Cairo,locatingAbility,null,null,targetSalary,null,0,currentEducationalLevel,null,null,null,null,linkedInProfile,githubProfile,achievements,null);
 
             return applicant;
 
