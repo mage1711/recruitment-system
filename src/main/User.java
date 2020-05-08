@@ -4,6 +4,7 @@ import enums.AccountState;
 import enums.AccountType;
 
 public class User implements Account {
+    private int id;
     private String name;
     private String email;
     private AccountType type;
@@ -21,6 +22,10 @@ public class User implements Account {
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setName(String name) {

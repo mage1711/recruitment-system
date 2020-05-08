@@ -24,9 +24,9 @@ public class Database {
     public static void query(String query) {
         try {
             Statement myStmt = myConn.createStatement();
-            if (myStmt.getFetchSize() > 0) {
+
                 result = myStmt.executeQuery(query);
-            }
+
         } catch (NullPointerException | SQLException exc) {
             result = null;
             Database.error = exc.toString();

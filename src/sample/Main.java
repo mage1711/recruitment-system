@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import main.Database;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -24,12 +25,15 @@ public class Main extends Application {
         Database.init();
         Database.query("SELECT * FROM applicant");
         ResultSet resultSet = Database.getResult();
-        if (resultSet != null) {
+
+        try {
+            resultSet.next();
             System.out.println(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        else {
-            System.out.println(Database.getError());
-        }
+
+
         launch(args);
     }
 }
