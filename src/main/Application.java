@@ -56,6 +56,10 @@ public class Application implements Subject {
 
     public void displayApplication() {}
 
+    public  void commitToDatabase(){
+
+    }
+
     @Override
     public void registerObserver() {
 

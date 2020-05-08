@@ -3,6 +3,7 @@ package main;
 import enums.*;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -66,9 +67,13 @@ public class Applicant extends User implements Observer {
     @Override
     public void update() {}
 
-    public void addApplication(Application application) {}
+    public void addApplication(Application application) {
+        application.commitToDatabase();
+    }
 
-    public void addJobTypeTarget(JobType jobType) {}
+   public void addJobTypeTarget( JobType jobType) {
+
+    }
 
     public void addJobRoleTarget(JobRole jobRole) {}
 
@@ -99,4 +104,7 @@ public class Applicant extends User implements Observer {
     public void removeSkill(String skill) {}
 
     public void removeLanguage(Language language) {}
+   public static void main(String[] args) {
+
+    }
 }

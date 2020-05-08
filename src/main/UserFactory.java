@@ -1,9 +1,12 @@
 package main;
 
+import enums.AccountType;
+
 public class UserFactory extends AccountFactory {
 
     @Override
-    public Account createAccount() {
-        return null;
+    public Account createAccount(AccountType type) {
+
+        return new User();
     }
 }
