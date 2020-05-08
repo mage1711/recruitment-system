@@ -22,4 +22,11 @@ public class JobReport extends Report {
     public void setVictimJob(Job victimJob) {
         this.victimJob = victimJob;
     }
+
+    public JobReport reportJop(int id,int userId, String description,int vId) {
+        String jobReport = "INSERT INTO `jobReport` (`id`, `userId`, `description`, `time`, " + "`victimJobId`,)" +
+                "VALUES (NULL, '" + userId + "', '" + description + "', '" + vId ;
+        Database.query(jobReport);
+        return new JobReport();
+    }
 }

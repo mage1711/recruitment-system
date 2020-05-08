@@ -169,7 +169,7 @@ public class Admin implements Account {
     }
 
     @Override
-    public void login() {
+    public void login(String email, String password) {
 
     }
 }

@@ -1,12 +1,16 @@
 package main;
 
 
+import enums.City;
+
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 
 public class Database {
-    private static final String user = "mostafa"; //"islamelb_recruitement_system";
-    private static final String password = "mostafa"; //"FydL5LYELVYvHK7";
-    private static final String name = "recruitment_system";//"islamelb_recruitement_system";
+    private static final String host = "jdbc:mysql://islamelbanna.info:3306/";
+    private static final String user = "islamelb_recruitement_system";
+    private static final String password = "FydL5LYELVYvHK7";
+    private static final String name = "islamelb_recruitement_system";
     private static final String params = "?serverTimezone=UTC";
     private static Connection myConn;
     private static ResultSet result;
@@ -14,14 +18,15 @@ public class Database {
 
     public static void init() {
         try {
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name, user, password);
+            myConn = DriverManager.getConnection(host + name + params, user, password);
         } catch (Exception exc) {
-            Database.error = exc.toString();
+            Database.error = exc.getMessage();
         }
     }
 
     public static void query(String query) {
         try {
+
             Statement myStmt = myConn.createStatement();
             if (query.contains("select") || query.contains("SELECT")) {
                 result = myStmt.executeQuery(query);
@@ -31,7 +36,6 @@ public class Database {
         } catch (NullPointerException | SQLException exc) {
             result = null;
             Database.error = exc.getMessage();
-            System.out.println(error);
         }
     }
 
@@ -41,5 +45,31 @@ public class Database {
 
     public static String getError() {
         return error;
+    }
+
+    public static int getCityId(City city) {
+        String query = "SELECT id FROM city WHERE city = '" + city + "'";
+        Database.query(query);
+        try {
+            result.next();
+            return result.getInt("id");
+        } catch (SQLException exc) {
+            Database.error = exc.getMessage();
+        }
+        return -1;
+    }
+
+    public static City getCityWithId(int id) {
+        String query = "SELECT city FROM city WHERE id=" + id;
+        Database.query(query);
+        City city = null;
+        try {
+            result.next();
+            String cityString = result.getString("city");
+            city = City.valueOf(cityString);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return city;
     }
 }

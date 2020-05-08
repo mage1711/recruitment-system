@@ -1,5 +1,7 @@
 package main;
 
+import enums.ApplicationState;
+
 public interface Observer {
-    void update();
+    void update(Object updatedObject);
 }

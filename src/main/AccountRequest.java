@@ -1,34 +1,35 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AccountRequest implements Subject {
-    private int ID;
+    private int id;
     private Recruiter account;
     private Date time;
-    private int approved;
+    private Boolean approved;
+    private ArrayList<Observer> observers;
 
     public AccountRequest() {
     }
 
-    public AccountRequest(int ID ,Recruiter account, Date time, int approved) {
-        this.ID = ID;
+    public AccountRequest(int id, Recruiter account, Date time, Boolean approved) {
+        this.id = id;
         this.account = account;
         this.time = time;
         this.approved = approved;
     }
 
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
     public Recruiter getAccount() {
         return account;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setAccount(Recruiter account) {
@@ -43,26 +44,30 @@ public class AccountRequest implements Subject {
         this.time = time;
     }
 
-    public int getApproved() {
+    public Boolean getApproved() {
         return approved;
     }
 
-    public void setApproved(int approved) {
+    public void setApproved(Boolean approved) {
         this.approved = approved;
+        this.notifyObservers();
     }
 
     @Override
-    public void registerObserver() {
-
+    public void registerObserver(Observer obj) {
+        if (obj == null) throw new NullPointerException("Null Observer");
+        if (!observers.contains(obj)) observers.add(obj);
     }
 
     @Override
-    public void removeObserver() {
-
+    public void removeObserver(Observer obj) {
+        observers.remove(obj);
     }
 
     @Override
-    public void notifyObserver() {
-
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
     }
 }

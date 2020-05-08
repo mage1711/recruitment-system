@@ -3,29 +3,31 @@ package main;
 import enums.AccountState;
 import enums.AccountType;
 
-public class User implements Account {
-    private int ID;
+public abstract class User implements Account {
+    private int id;
     private String name;
     private String email;
     private AccountType type;
-    private NotifyBehaviour notifyBehaviour;
-    private AccountState accountState;
+    protected NotifyBehaviour notifyBehaviour;
+    protected AccountState accountState;
 
     public User() {
     }
 
-    public User(String name, String email, AccountType type) {
+    public User(String name, String email, AccountType type, AccountState accountState) {
         this.name = name;
         this.email = email;
         this.type = type;
+
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
+        this.accountState = accountState;
     }
 
     public String getName() {
@@ -64,7 +66,7 @@ public class User implements Account {
         this.notifyBehaviour = notifyBehaviour;
     }
 
-    public void sendNotification() {}
+    public abstract void sendNotification(Object o);
 
     public AccountState getAccountState() {
         return accountState;
@@ -75,7 +77,7 @@ public class User implements Account {
     }
 
     @Override
-    public void login() {
+    public void login(String email, String password) {
 
     }
 }

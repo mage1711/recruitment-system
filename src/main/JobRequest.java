@@ -50,12 +50,12 @@ public class JobRequest implements Subject {
     }
 
     @Override
-    public void registerObserver() {
+    public void registerObserver(Observer obj) {
 
     }
 
     @Override
-    public void removeObserver() {
+    public void removeObserver(Observer obj) {
 
     }
 

@@ -1,5 +1,5 @@
 package main;
 
 public interface NotifyBehaviour {
-    void sendNotification();
+    void sendNotification(Object o);
 }
