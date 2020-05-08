@@ -32,6 +32,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-.idea
+.idea/
 .DS_Store
 *.iml
