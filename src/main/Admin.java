@@ -4,8 +4,10 @@ import enums.AccountState;
 import enums.AccountType;
 
 import java.util.ArrayList;
-import java.sql.*;
-import java.sql.Date;
+
+import java.sql.SQLException;
+
+
 
 public class Admin implements Account {
     int id;
@@ -53,9 +55,10 @@ public class Admin implements Account {
 
         try {
             while(result.next()){
-                Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
+                Applicant applicant = Applicant.getApplicant(result.getInt("userId"));
                 Job job  = Job.getJobWithId(result.getInt("victimJobId"));
-//                reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getTime("time") , job));
+                reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getDate("time") , job));
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -75,7 +78,7 @@ public class Admin implements Account {
                 resultt.next();
                 Recruiter recruiter = new Recruiter(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter, AccountState.valueOf(resultt.getString("accountState")) ,resultt.getInt("id"), null , null);
                 Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
-                reports.add(new ApplicantReport(recruiter , result.getString("description") , result.getTime("time") , applicant));
+                reports.add(new ApplicantReport(recruiter , result.getString("description") , result.getDate("time") , applicant));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -84,8 +87,12 @@ public class Admin implements Account {
         return reports;
     }
 
-    public void deleteReport(Report report){
-        Database.query("delete from report where id = " + report.getID());
+    public void deleteJobReport(JobReport report){
+        Database.query("delete from jobReport where id = " + report.getId());
+    }
+
+    public void deleteApplicantReport(ApplicantReport report){
+        Database.query("delete from applicantReport where id = " + report.getId());
     }
 
     public void deleteJob(Job job) {
@@ -119,19 +126,17 @@ public class Admin implements Account {
     public ArrayList<JobRequest> getJobRequests() {
         Database.init();
         ArrayList<JobRequest> requests = new ArrayList<JobRequest>();
-        Database.query("select * from jobRequest ");
+        Database.query("select * from jobRequest");
         var result = Database.getResult();
 
         try {
-            result.next();
-            System.out.println(result.getInt("id"));
-//            while(result.next()){
-//                System.out.println(result.getInt("id"));
-//                Job job = Job.getJobWithId(result.getInt("jobId"));
-//                requests.add(new JobRequest(result.getInt("id"),job,result.getDate("time"),result.getInt("approved")));
-//            }
+
+            while(result.next()){
+                Job job = Job.getJobWithId(result.getInt("jobId"));
+                requests.add(new JobRequest(result.getInt("id"),job,result.getDate("time"),result.getInt("approved")));
+            }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            //throwables.printStackTrace();
         }
 
 
@@ -172,7 +177,7 @@ public class Admin implements Account {
         if(user.getClass().getName().contains("Applicant")){
             Database.query("update applicant set accountState = 'Banned' where id = " + user.getId());
         } else if (user.getClass().getName().contains("Recruiter")){
-            Database.query("update recruiter set accountState = 'Active' where id = " + user.getId());
+            Database.query("update recruiter set accountState = 'Banned' where id = " + user.getId());
         }
     }
 
