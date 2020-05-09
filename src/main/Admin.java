@@ -8,6 +8,7 @@ import java.sql.*;
 import java.sql.Date;
 
 public class Admin implements Account {
+    int id;
     private String name;
     private String email;
 
@@ -19,6 +20,14 @@ public class Admin implements Account {
         Database.init();
         this.name = name;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -182,19 +191,19 @@ public class Admin implements Account {
     }
 
     @Override
-    public void login(String email, String password) {
-        Database.query("select * from admin where email like '%" + email + "%'");
+    public boolean login(String email, String password) {
+        Database.query("select * from admin where email = '" + email + "' AND password = '" + password + "'");
         var result = Database.getResult();
         try {
-            if(result.next()){
-                System.out.println("Admin is logged in");
-            }else{
-                System.out.println("Admin email doesn't exist");
-            }
-
+            result.next();
+            this.id = result.getInt("id");
+            this.email = result.getString("email");
+            this.name = result.getString("name");
+            return true;
         } catch (SQLException throwables) {
             System.out.println("Admin email doesn't exist");
             throwables.printStackTrace();
         }
+        return false;
     }
 }

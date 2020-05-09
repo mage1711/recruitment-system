@@ -32,7 +32,6 @@ public class Recruiter extends User implements Observer {
     public Recruiter(String name, String email, String password, AccountType type, AccountState accountState,
                      Company company, boolean isNew) {
         super(name, email, type, accountState);
-        this.id = id;
         this.company = company;
         this.notifyBehaviour = new NotifyRecruiter();
         this.isNew = isNew;
@@ -55,7 +54,27 @@ public class Recruiter extends User implements Observer {
         this.notifyBehaviour.sendNotification(o);
     }
 
-    public void isApproved() {
+    @Override
+    public boolean login(String email, String password) {
+        String query = "SELECT * FROM recruiter WHERE email='" + email + "' AND password='" + password + "'";
+        Database.query(query);
+        var result = Database.getResult();
+        try {
+            result.next();
+            this.setId(result.getInt("id"));
+            this.setName(result.getString("name"));
+            this.setEmail(email);
+            this.accountState = AccountState.valueOf(result.getString("accountState"));
+            this.company = Company.getCompany(result.getInt("companyId"));
+            return true;
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+        }
+        return false;
+    }
+
+    public boolean isApproved() {
+        return this.accountState == AccountState.Active;
     }
 
     @Override
@@ -109,7 +128,7 @@ public class Recruiter extends User implements Observer {
             recruiter = new Recruiter(result.getString("name"), result.getString("email"),
                                       AccountType.Recruiter,
                                       AccountState.valueOf(result.getString("accountState")), result.getInt("id"),
-                                      new ArrayList<Job>(), company);
+                                      new ArrayList<>(), company);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -18,7 +18,6 @@ public abstract class User implements Account {
         this.name = name;
         this.email = email;
         this.type = type;
-
     }
 
     public int getId() {
@@ -27,7 +26,6 @@ public abstract class User implements Account {
 
     public void setId(int id) {
         this.id = id;
-        this.accountState = accountState;
     }
 
     public String getName() {
@@ -76,8 +74,5 @@ public abstract class User implements Account {
         this.accountState = accountState;
     }
 
-    @Override
-    public void login(String email, String password) {
-
-    }
+    public abstract boolean login(String email, String password);
 }

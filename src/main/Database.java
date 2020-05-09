@@ -63,15 +63,17 @@ public class Database {
     }
 
     public static City getCityWithId(int id) {
-        String query = "SELECT city FROM city WHERE id=" + id;
-        Database.query(query);
         City city = null;
-        try {
-            result.next();
-            String cityString = result.getString("city");
-            city = City.valueOf(cityString);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        if (id != 0) {
+            String query = "SELECT city FROM city WHERE id=" + id;
+            Database.query(query);
+            try {
+                result.next();
+                String cityString = result.getString("city");
+                city = City.valueOf(cityString);
+            } catch (SQLException throwables) {
+                System.out.println(throwables.getMessage());
+            }
         }
         return city;
     }

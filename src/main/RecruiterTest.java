@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecruiterTest {
-
     Recruiter createFakeRecruiter() {
         UserFactory userFactory = new UserFactory(AccountType.Recruiter);
         Company company = Company.getCompany(1);
         // commitToDatabase is called inside the constructor
-        return (Recruiter) userFactory.createUser("Test Recruiter", "recruiter@test.test", "123123", AccountType.Recruiter, AccountState.Pending, company);
+        return (Recruiter) userFactory.createUser("Test Recruiter", "recruiter@test.test", "123123",
+                                                  AccountType.Recruiter, AccountState.Pending, company);
     }
 
     // Creates account

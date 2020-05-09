@@ -10,6 +10,14 @@ import java.util.Date;
 public class UserFactory {
     private AccountType type;
 
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
     public UserFactory() {
     }
 

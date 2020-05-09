@@ -37,7 +37,8 @@ public class Applicant extends User implements Observer {
     public Applicant() {
     }
 
-    public Applicant(String name, String email, int id, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
+    public Applicant(String name, String email, int id, AccountType type, AccountState accountState, File CV,
+                     ArrayList<Application> applications, String nationality,
                      Country currentCountry, City currentCity, Boolean locatingAbility,
                      ArrayList<JobType> targetJobTypes,
                      ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
@@ -47,8 +48,6 @@ public class Applicant extends User implements Observer {
                      ArrayList<Language> languages, String linkedInProfile, String githubProfile,
                      String achievements, ArrayList<Job> savedJobs) {
         super(name, email, type, accountState);
-        this.birthDate = birthDate;
-        this.gender = gender;
         this.CV = CV;
         this.applications = applications;
         this.nationality = nationality;
@@ -70,11 +69,13 @@ public class Applicant extends User implements Observer {
         this.githubProfile = githubProfile;
         this.achievements = achievements;
         this.savedJobs = savedJobs;
-       this.setId(id);
+        this.setId(id);
 
 
     }
-    public Applicant(String name, String email,String password, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
+
+    public Applicant(String name, String email, String password, AccountType type, AccountState accountState, File CV,
+                     ArrayList<Application> applications, String nationality,
                      Country currentCountry, City currentCity, Boolean locatingAbility,
                      ArrayList<JobType> targetJobTypes,
                      ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
@@ -129,11 +130,36 @@ public class Applicant extends User implements Observer {
         this.notifyBehaviour.sendNotification(updatedApplication);
     }
 
+    @Override
+    public boolean login(String email, String password) {
+        String query = "SELECT * FROM applicant WHERE email='" + email + "' AND password='" + password + "'";
+        Database.query(query);
+        var result = Database.getResult();
+        try {
+            result.next();
+            this.setId(result.getInt("id"));
+            this.setName(result.getString("name"));
+            this.nationality = result.getString("nationality");
+            int cityId = result.getInt("cityId");
+            this.currentCity = Database.getCityWithId(cityId);
+            this.locatingAbility = result.getBoolean("locatingAbility");
+            this.linkedInProfile = result.getString("linkedInProfile");
+            this.githubProfile = result.getString("githubProfile");
+            this.achievements = result.getString("achievements");
+            this.currentEducationalLevel = EducationalLevel.Bachelor;
+            this.accountState = AccountState.valueOf(result.getString("accountState"));
+            return true;
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+        }
+        return false;
+    }
+
     public void commitToDatabase(String password) {
         String query = "INSERT into applicant(name, email, password, targetSalary, " +
                 "currentEducationalLevel,accountState) " +
-                "values('"+this.getName()+"','"+this.getEmail()+"','"+ password+"',"+this.getMinSalaryTarget()
-                + ",'"+this.currentEducationalLevel+"','"+AccountState.Active+"')";
+                "values('" + this.getName() + "','" + this.getEmail() + "','" + password + "'," + this.getMinSalaryTarget()
+                + ",'" + this.currentEducationalLevel + "','" + AccountState.Active + "')";
         Database.query(query);
 
     }
@@ -235,9 +261,12 @@ public class Applicant extends User implements Observer {
             EducationalLevel currentEducationalLevel = EducationalLevel.Bachelor;
             AccountState accountState = AccountState.valueOf(results.getString("accountState"));
 
-            Applicant applicant = new Applicant(name, email, id, AccountType.Applicant, accountState, cv, null, nationality, Country.Egypt, City.Cairo, locatingAbility, Database.getJobTypes(id, "applicantTargetJobTypes"), Database.getJobRole(id, "applicantTargetJobRoles"), targetSalary, null, 0, currentEducationalLevel, null, null, null, null, linkedInProfile, githubProfile, achievements, null);
-
-            return applicant;
+            return new Applicant(name, email, id, AccountType.Applicant, accountState, cv, null,
+                                 nationality, Country.Egypt, City.Cairo, locatingAbility,
+                                 Database.getJobTypes(id, "applicantTargetJobTypes"),
+                                 Database.getJobRole(id, "applicantTargetJobRoles"), targetSalary, null,
+                                 0, currentEducationalLevel, null, null, null, null, linkedInProfile,
+                                 githubProfile, achievements, null);
 
 
         } catch (SQLException e) {
@@ -249,7 +278,7 @@ public class Applicant extends User implements Observer {
 
     public static void main(String[] args) {
 //        Applicant test = new Applicant("fady", "fady@gmail.com", "fady", AccountType.Applicant, AccountState.Active, null, null, null, Country.Egypt, City.Cairo, null, null, null, 6000, null, 0, EducationalLevel.Bachelor, null, null, null, null, null, null, null, null);
-Database.init();
-System.out.print(Database.getApplicantId("ziad@gmail.com"));
+        Database.init();
+        System.out.print(Database.getApplicantId("ziad@gmail.com"));
     }
 }
