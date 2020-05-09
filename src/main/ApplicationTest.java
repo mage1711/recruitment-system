@@ -22,4 +22,17 @@ class ApplicationTest {
 
 
     }
+    @Test
+    void deleteFromDatabase() {
+        Database.init();
+        Job testJob = Job.getAll().get(0);
+        Applicant testApplicant = Applicant.getApplicant(1);
+
+        Application testApplication = new Application(testApplicant,testJob,new Date(new java.util.Date().getTime()), ApplicationState.Submitted);
+        testApplication.commitToDatabase();
+        assertEquals(testApplication.getId(),Database.getApplicationId(testApplicant.getId(),1));
+        Database.deleteApplication(testApplication.getId());
+
+
+    }
 }

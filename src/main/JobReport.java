@@ -6,14 +6,26 @@ import enums.ReportTypes;
 import java.sql.Date;
 
 public class JobReport extends Report {
+
+
+    private int id;
     private Job victimJob;
 
     public JobReport() {
     }
 
-    public JobReport(User reporter, String description, Date time, Job victimJob) {
+    public JobReport(int id ,User reporter, String description, Date time, Job victimJob) {
         super(reporter, description, time, ReportTypes.ReportOnJobPost);
+        this.id = id;
         this.victimJob = victimJob;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Job getVictimJob() {
@@ -24,7 +36,9 @@ public class JobReport extends Report {
         this.victimJob = victimJob;
     }
 
-    public static JobReport reportJop(int userId, String description,int vId) {
+
+    public static JobReport reportJop(int id,int userId, String description,int vId) {
+
         String jobReport = "INSERT INTO `jobReport` (`id`, `userId`, `description`, `time`, " + "`victimJobId`)" +
                 "VALUES (NULL, '" + userId + "', '" + description + "', '" + new Date(new java.util.Date().getTime())+ "', '" + vId + "')";
         Database.query(jobReport);
@@ -34,6 +48,6 @@ public class JobReport extends Report {
     public static void main(String[] args) {
         Database.init();
         JobReport jobReport = new JobReport();
-        jobReport.reportJop(1, "testtttttttttttttt", 2);
+//        jobReport.reportJop(1, "testtttttttttttttt", 2);
     }
 }
