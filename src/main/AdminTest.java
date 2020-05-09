@@ -1,10 +1,7 @@
 package main;
 
-import enums.AccountState;
-import enums.AccountType;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,74 +9,117 @@ class AdminTest {
 
     @org.junit.jupiter.api.Test
     void getJobReports() {
+
+        Admin admin = new Admin();
+        var requests = admin.getJobReports();
+        assertEquals(requests.size() , 1);
     }
 
     @org.junit.jupiter.api.Test
     void getApplicantReports() {
+        Admin admin = new Admin();
+        var requests = admin.getApplicantReports();
+        assertEquals(requests.size() , 1);
     }
 
     @org.junit.jupiter.api.Test
     void deleteJob() {
+        Admin admin = new Admin();
+        Job job = new Job();
+        job.setId(3);
+        admin.deleteJob(job);
+
+        assertEquals(Job.getJobWithId(job.getId()) , null);
+    }
+
+    @org.junit.jupiter.api.Test
+    void deleteJobReport() {
+        Admin admin = new Admin();
+        JobReport report = new JobReport();
+        report.setId(2);
+        admin.deleteJobReport(report);
+        assertEquals(JobReport.getReportWithId(report.getId()), null);
+    }
+
+    @org.junit.jupiter.api.Test
+    void deleteApplicantReport() {
+        Admin admin = new Admin();
+        ApplicantReport report = new ApplicantReport();
+        report.setId(2);
+        admin.deleteApplicantReport(report);
+        assertEquals(ApplicantReport.getReportWithId(report.getId()), null);
     }
 
     @org.junit.jupiter.api.Test
     void getAccountRequests() {
-        Database.init();
         Admin admin = new Admin();
-        AccountRequest r = new AccountRequest();
-        r.setId(1);
         var requests = admin.getAccountRequests();
-        ArrayList<AccountRequest> requestsDB = new ArrayList<AccountRequest>();
-        Database.query("select * from accountRequest ");
-        var result = Database.getResult();
-
-        try {
-            while(result.next()){
-                Database.query("select * from recruiter where id =  " + result.getInt("recruiterId"));
-                var resultt = Database.getResult();
-                resultt.next();
-                Recruiter recruiter = new Recruiter(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter, AccountState.valueOf(resultt.getString("accountState")) ,resultt.getInt("id"), null , null);
-                requestsDB.add(new AccountRequest(result.getInt("id"),recruiter,result.getDate("time"),result.getBoolean("approved")));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        for (int i = 0; i < requests.size(); i++) {
-            assertEquals(requests.get(i) , requestsDB.get(i));
-
-        }
+        assertEquals(requests.size() , 1);
     }
 
     @org.junit.jupiter.api.Test
     void getJobRequests() {
+        Admin admin = new Admin();
+        var requests = admin.getJobRequests();
+        assertEquals(requests.size() , 2);
     }
 
     @org.junit.jupiter.api.Test
     void acceptAccountRequest() {
-        Database.init();
         Admin admin = new Admin();
         AccountRequest r = new AccountRequest();
         r.setId(1);
+        admin.acceptAccountRequest(r);
+        Database.query("select * from accountRequest where id = " + r.getId());
+        var result = Database.getResult();
+        try {
+            result.next();
+            System.out.println(result.toString());
+            assertEquals(result.getInt("approved") , 1);
+        } catch (SQLException throwables) {
+            //throwables.printStackTrace();
+        }
     }
 
     @org.junit.jupiter.api.Test
     void rejectAccountRequest() {
+        Admin admin = new Admin();
+        AccountRequest r = new AccountRequest();
+        r.setId(1);
+        admin.rejectAccountRequest(r);
+        Database.query("select * from accountRequest where id = " + r.getId());
+        var result = Database.getResult();
+        try {
+            result.next();
+            System.out.println(result.toString());
+            assertEquals(result.getInt("approved") , -1);
+        } catch (SQLException throwables) {
+            //throwables.printStackTrace();
+        }
     }
 
     @org.junit.jupiter.api.Test
     void banUser() {
-        Database.init();
         Admin admin = new Admin();
+        Recruiter r = new Recruiter();
+        r.setId(1);
+        admin.banUser(r);
+        Database.query("select accountState from recruiter where id = " + r.getId());
+        var result = Database.getResult();
+        try {
+            result.next();
+            assertEquals(result.getString("accountState") , "Banned");
+        } catch (SQLException throwables) {
+            //throwables.printStackTrace();
+        }
 
     }
 
     @org.junit.jupiter.api.Test
     void acceptJobRequest() {
-        Database.init();
         Admin admin = new Admin();
         JobRequest r = new JobRequest();
-        r.setId(10);
+        r.setId(3);
         admin.acceptJobRequest(r);
         Database.query("select * from jobRequest where id = " + r.getId());
         var result = Database.getResult();
@@ -88,12 +128,25 @@ class AdminTest {
             System.out.println(result.toString());
             assertEquals(result.getInt("approved") , 1);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            //throwables.printStackTrace();
         }
 
     }
 
     @org.junit.jupiter.api.Test
     void rejectJobRequest() {
+        Admin admin = new Admin();
+        JobRequest r = new JobRequest();
+        r.setId(4);
+        admin.rejectJobRequest(r);
+        Database.query("select * from jobRequest where id = " + r.getId());
+        var result = Database.getResult();
+        try {
+            result.next();
+            System.out.println(result.toString());
+            assertEquals(result.getInt("approved") , -1);
+        } catch (SQLException throwables) {
+            //throwables.printStackTrace();
+        }
     }
 }
