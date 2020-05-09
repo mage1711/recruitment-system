@@ -125,9 +125,7 @@ public class Application implements Subject {
 
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     @Override
     public void registerObserver(Observer obj) {

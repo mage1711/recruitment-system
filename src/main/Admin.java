@@ -5,7 +5,7 @@ import enums.AccountType;
 
 import java.util.ArrayList;
 import java.sql.*;
-import java.util.Date;
+import java.sql.Date;
 
 public class Admin implements Account {
     private String name;
@@ -46,7 +46,7 @@ public class Admin implements Account {
             while(result.next()){
                 Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
                 Job job  = Job.getJobWithId(result.getInt("victimJobId"));
-                reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getTime("time") , job));
+//                reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getTime("time") , job));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
