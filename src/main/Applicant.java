@@ -106,6 +106,9 @@ public class Applicant extends User implements Observer {
         this.achievements = achievements;
         this.savedJobs = savedJobs;
         this.notifyBehaviour = new NotifyApplicant();
+        this.commitToDatabase(password);
+        int id = Database.getApplicantId(this.getEmail());
+        this.setId(id);
     }
 
     @Override
@@ -246,6 +249,7 @@ public class Applicant extends User implements Observer {
 
     public static void main(String[] args) {
 //        Applicant test = new Applicant("fady", "fady@gmail.com", "fady", AccountType.Applicant, AccountState.Active, null, null, null, Country.Egypt, City.Cairo, null, null, null, 6000, null, 0, EducationalLevel.Bachelor, null, null, null, null, null, null, null, null);
-
+Database.init();
+System.out.print(Database.getApplicantId("ziad@gmail.com"));
     }
 }

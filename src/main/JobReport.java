@@ -67,6 +67,8 @@ public class JobReport extends Report {
     public static void main(String[] args) {
         Database.init();
         JobReport jobReport = new JobReport();
+
         //jobReport.reportJop(1, "testtttttttttttttt", 2);
+
     }
 }

@@ -125,8 +125,6 @@ public class Application implements Subject {
 
     }
 
-
-
     @Override
     public void registerObserver(Observer obj) {
         if (obj == null) throw new NullPointerException("Null Observer");

@@ -4,7 +4,9 @@ import enums.AccountState;
 import enums.AccountType;
 
 import java.util.ArrayList;
+
 import java.sql.SQLException;
+
 
 
 public class Admin implements Account {
@@ -47,6 +49,7 @@ public class Admin implements Account {
                 Applicant applicant = Applicant.getApplicant(result.getInt("userId"));
                 Job job  = Job.getJobWithId(result.getInt("victimJobId"));
                 reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getDate("time") , job));
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
