@@ -8,6 +8,13 @@ public class JobRequest implements Subject {
     private Date time;
     private int approved;
 
+    public JobRequest(int ID, Job job, Date time, int approved) {
+        this.ID = ID;
+        this.job = job;
+        this.time = time;
+        this.approved = approved;
+    }
+
     public JobRequest() {
     }
 
@@ -17,11 +24,11 @@ public class JobRequest implements Subject {
         this.approved = approved;
     }
 
-    public int getID() {
+    public int getId() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setId(int ID) {
         this.ID = ID;
     }
 
@@ -48,6 +55,8 @@ public class JobRequest implements Subject {
     public void setApproved(int approved) {
         this.approved = approved;
     }
+
+
 
     @Override
     public void registerObserver(Observer obj) {

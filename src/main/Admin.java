@@ -5,6 +5,8 @@ import enums.AccountType;
 
 import java.util.ArrayList;
 import java.sql.*;
+import java.util.Date;
+
 public class Admin implements Account {
     private String name;
     private String email;
@@ -37,34 +39,41 @@ public class Admin implements Account {
 
     public ArrayList<JobReport> getJobReports() {
         ArrayList<JobReport> reports = new ArrayList<JobReport>();
+        Database.query("select * from jobReport ");
+        var result = Database.getResult();
 
+        try {
+            while(result.next()){
+                Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
+                Job job  = Job.getJobWithId(result.getInt("victimJobId"));
+                reports.add(new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getTime("time") , job));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return reports;
     }
 
-//    public ArrayList<ApplicantReport> getApplicantReports() {
-//        ArrayList<ApplicantReport> reports = new ArrayList<ApplicantReport>();
-//        Database.query("select * from applicantReports ");
-//        var result = Database.getResult();
-//
-//        try {
-//            while(result.next()){
-//                Database.query("select * from recruiter where id =  " + result.getInt("userId"));
-//                var resultt = Database.getResult();
-//                resultt.next();
-//
-//                Recruiter recruiter = new Recruiter(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter, AccountState.valueOf(resultt.getString("accountState")) ,resultt.getInt("id"), null , null);
-//                Database.query("select * from applicant where id =  " + result.getInt("applicantId"));
-//                resultt = Database.getResult();
-//                resultt.next();
-//                Applicant applicant = new Applicant();
-//                requests.add(new AccountRequest(result.getInt("id"),recruiter,result.getDate("time"),result.getBoolean("approved")));
-//            }
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//
-//        return reports;
-//    }
+    public ArrayList<ApplicantReport> getApplicantReports() {
+        ArrayList<ApplicantReport> reports = new ArrayList<ApplicantReport>();
+        Database.query("select * from applicantReport ");
+        var result = Database.getResult();
+
+        try {
+            while(result.next()){
+                Database.query("select * from recruiter where id =  " + result.getInt("userId"));
+                var resultt = Database.getResult();
+                resultt.next();
+                Recruiter recruiter = new Recruiter(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter, AccountState.valueOf(resultt.getString("accountState")) ,resultt.getInt("id"), null , null);
+                Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
+                reports.add(new ApplicantReport(recruiter , result.getString("description") , result.getTime("time") , applicant));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return reports;
+    }
 
     public void deleteReport(Report report){
         Database.query("delete from report where id = " + report.getID());
@@ -98,26 +107,27 @@ public class Admin implements Account {
         return requests;
     }
 
-//    public ArrayList<JobRequest> getJobRequests() {
-//        ArrayList<JobRequest> requests = new ArrayList<JobRequest>();
-//        Database.query("select * from jobRequest ");
-//        var result = Database.getResult();
-//
-//        try {
+    public ArrayList<JobRequest> getJobRequests() {
+        Database.init();
+        ArrayList<JobRequest> requests = new ArrayList<JobRequest>();
+        Database.query("select * from jobRequest ");
+        var result = Database.getResult();
+
+        try {
+            result.next();
+            System.out.println(result.getInt("id"));
 //            while(result.next()){
-//                Database.query("select * from job where id =  " + result.getInt("jobId"));
-//                var resultt = Database.getResult();
-//                resultt.next();
-//                Job job = new Job(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter , resultt.getInt("id"), AccountState.valueOf(resultt.getString("accountState")));
-//                requests.add(new JobRequest(result.getInt("id"),recruiter,result.getDate("time"),result.getInt("approved")));
+//                System.out.println(result.getInt("id"));
+//                Job job = Job.getJobWithId(result.getInt("jobId"));
+//                requests.add(new JobRequest(result.getInt("id"),job,result.getDate("time"),result.getInt("approved")));
 //            }
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//
-//
-//        return requests;
-//    }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        return requests;
+    }
 
     public void acceptAccountRequest(AccountRequest request) {
         Database.query("select * from accountRequest where id = " + request.getId());
@@ -141,9 +151,8 @@ public class Admin implements Account {
 
         try {
             result.next();
-            System.out.println(result.getInt("id"));
             Database.query("update accountRequest set approved = -1 where id = " + request.getId());
-            //Database.query("update recruiter set accountState = 'Rejected' where id = " + result.getInt("recruiterId"));
+            Database.query("update recruiter set accountState = 'Rejected' where id = " + result.getInt("recruiterId"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -154,16 +163,18 @@ public class Admin implements Account {
         if(user.getClass().getName().contains("Applicant")){
             Database.query("update applicant set accountState = 'Banned' where id = " + user.getId());
         } else if (user.getClass().getName().contains("Recruiter")){
-            Database.query("update recruiter set accountState = 'Banned' where id = " + user.getId());
+            Database.query("update recruiter set accountState = 'Active' where id = " + user.getId());
         }
     }
 
     public void acceptJobRequest(JobRequest request) {
-        Database.query("update jobRequest set approved = 1 where id = " + request.getID());
+        Database.init();
+        Database.query("update jobRequest set approved = 1 where id = " + request.getId());
+
     }
 
     public void rejectJobRequest(JobRequest request) {
-        Database.query("update jobRequest set approved = -1 where id = " + request.getID());
+        Database.query("update jobRequest set approved = -1 where id = " + request.getId());
     }
 
     public void addAdminAccount() {
@@ -172,6 +183,18 @@ public class Admin implements Account {
 
     @Override
     public void login(String email, String password) {
+        Database.query("select * from admin where email like '%" + email + "%'");
+        var result = Database.getResult();
+        try {
+            if(result.next()){
+                System.out.println("Admin is logged in");
+            }else{
+                System.out.println("Admin email doesn't exist");
+            }
 
+        } catch (SQLException throwables) {
+            System.out.println("Admin email doesn't exist");
+            throwables.printStackTrace();
+        }
     }
 }
