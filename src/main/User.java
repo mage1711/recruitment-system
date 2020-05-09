@@ -52,9 +52,11 @@ public abstract class User implements Account {
         this.type = type;
     }
 
-    public void deleteAccount() { }
+    public void deleteAccount() {
+    }
 
-    public void addReport() {}
+    public void addReport() {
+    }
 
     public NotifyBehaviour getNotifyBehaviour() {
         return notifyBehaviour;

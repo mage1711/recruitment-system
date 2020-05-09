@@ -1,4 +1,6 @@
-package main;
+package tests;
+
+import main.*;
 
 import java.sql.SQLException;
 
@@ -29,7 +31,7 @@ class AdminTest {
         job.setId(3);
         admin.deleteJob(job);
 
-        assertEquals(Job.getJobWithId(job.getId()) , null);
+        assertNull(Job.getJobWithId(job.getId()));
     }
 
     @org.junit.jupiter.api.Test
@@ -38,7 +40,7 @@ class AdminTest {
         JobReport report = new JobReport();
         report.setId(2);
         admin.deleteJobReport(report);
-        assertEquals(JobReport.getReportWithId(report.getId()), null);
+        assertNull(JobReport.getReportWithId(report.getId()));
     }
 
     @org.junit.jupiter.api.Test
@@ -47,7 +49,7 @@ class AdminTest {
         ApplicantReport report = new ApplicantReport();
         report.setId(2);
         admin.deleteApplicantReport(report);
-        assertEquals(ApplicantReport.getReportWithId(report.getId()), null);
+        assertNull(ApplicantReport.getReportWithId(report.getId()));
     }
 
     @org.junit.jupiter.api.Test

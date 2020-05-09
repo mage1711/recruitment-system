@@ -77,8 +77,9 @@ public class Database {
         }
         return city;
     }
-    public static  int getApplicantId(String email){
-        String query = "SELECT id from applicant where email = "+"'"+email+"'";
+
+    public static int getApplicantId(String email) {
+        String query = "SELECT id from applicant where email = " + "'" + email + "'";
         Database.query(query);
         try {
             result.next();
@@ -88,8 +89,9 @@ public class Database {
         }
         return -1;
     }
-    public static String getApplicantPassword(String email){
-        String query = "SELECT password from applicant where email = "+"'"+email+"'";
+
+    public static String getApplicantPassword(String email) {
+        String query = "SELECT password from applicant where email = " + "'" + email + "'";
         Database.query(query);
         try {
             result.next();
@@ -99,8 +101,9 @@ public class Database {
         }
         return "";
     }
-    public static ArrayList<JobType> getJobTypes(int id,String table){
-        String query = "SELECT * from"+ table+" where applicantId = " +id;
+
+    public static ArrayList<JobType> getJobTypes(int id, String table) {
+        String query = "SELECT * from" + table + " where applicantId = " + id;
         Database.query(query);
         ArrayList<JobType> jobTypes = new ArrayList<>();
         if (result != null) {
@@ -117,10 +120,11 @@ public class Database {
                 e.printStackTrace();
             }
         }
-        return  jobTypes;
+        return jobTypes;
     }
-    public static ArrayList<JobRole> getJobRole(int id, String table){
-        String query = "SELECT * from"+ table+" where applicantId = " +id;
+
+    public static ArrayList<JobRole> getJobRole(int id, String table) {
+        String query = "SELECT * from" + table + " where applicantId = " + id;
         Database.query(query);
         ArrayList<JobRole> jobRoles = new ArrayList<>();
         if (result != null) {
@@ -134,18 +138,21 @@ public class Database {
                 e.printStackTrace();
             }
         }
-        return  jobRoles;
+        return jobRoles;
     }
-    public static void deleteApplicant(String email){
-        String query = "DELETE FROM applicant Where email = " +"'"+email+"'";
+
+    public static void deleteApplicant(String email) {
+        String query = "DELETE FROM applicant Where email = " + "'" + email + "'";
         Database.query(query);
     }
-    public static void deleteApplication(int id){
-        String query = "DELETE FROM application Where id = " +id;
+
+    public static void deleteApplication(int id) {
+        String query = "DELETE FROM application Where id = " + id;
         Database.query(query);
     }
-    public static  int getApplicationId(int applicantId,int jobId){
-        String query = "SELECT id from application where applicantId ="+applicantId+" and  jobId = "+jobId;
+
+    public static int getApplicationId(int applicantId, int jobId) {
+        String query = "SELECT id from application where applicantId =" + applicantId + " and  jobId = " + jobId;
         Database.query(query);
         try {
             result.next();

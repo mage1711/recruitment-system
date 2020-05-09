@@ -36,7 +36,7 @@ public class ApplicantReport extends Report {
     }
 
 
-    public static ApplicantReport getReportWithId(int id){
+    public static ApplicantReport getReportWithId(int id) {
         Database.init();
         ApplicantReport report = null;
         Database.query("select * from applicantReport where id = " + id);
@@ -47,9 +47,12 @@ public class ApplicantReport extends Report {
             Database.query("select * from recruiter where id =  " + result.getInt("userId"));
             var resultt = Database.getResult();
             resultt.next();
-            Recruiter recruiter = new Recruiter(resultt.getString("name") , resultt.getString("email") , AccountType.Recruiter, AccountState.valueOf(resultt.getString("accountState")) ,resultt.getInt("id"), null , null);
+            Recruiter recruiter = new Recruiter(resultt.getString("name"), resultt.getString("email"),
+                                                AccountType.Recruiter,
+                                                AccountState.valueOf(resultt.getString("accountState")),
+                                                resultt.getInt("id"), null, null);
             Applicant applicant = Applicant.getApplicant(result.getInt("victimApplicantId"));
-            report = new ApplicantReport(recruiter , result.getString("description") , result.getDate("time") , applicant);
+            report = new ApplicantReport(recruiter, result.getString("description"), result.getDate("time"), applicant);
 
         } catch (SQLException throwables) {
             //throwables.printStackTrace();

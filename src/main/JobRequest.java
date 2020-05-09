@@ -57,7 +57,6 @@ public class JobRequest implements Subject {
     }
 
 
-
     @Override
     public void registerObserver(Observer obj) {
 

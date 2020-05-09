@@ -1,6 +1,8 @@
-package main;
+package tests;
 
 import enums.*;
+import main.Applicant;
+import main.Database;
 
 import static org.junit.jupiter.api.Assertions.*;
 

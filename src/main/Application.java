@@ -32,6 +32,7 @@ public class Application implements Subject {
         this.state = state;
         this.observers = new ArrayList<>();
     }
+
     public Application(Applicant applicant, Job job, Date time, ApplicationState state) {
         this.applicant = applicant;
         this.job = job;
@@ -39,6 +40,7 @@ public class Application implements Subject {
         this.state = state;
 
     }
+
     public Applicant getApplicant() {
         return applicant;
     }
@@ -93,7 +95,7 @@ public class Application implements Subject {
     }
 
     public ArrayList<Application> displayApplication() {
-        ArrayList<Application> applications = new ArrayList<Application>();
+        ArrayList<Application> applications = new ArrayList<>();
         Database.query("select * from application");
         var result = Database.getResult();
         try {
@@ -118,10 +120,11 @@ public class Application implements Subject {
 
 
     public void commitToDatabase() {
-        String query = "INSERT into application(applicantId, jobId, time, state)"+
-                "values("+this.getApplicant().getId()+","+1+",'"+new Date(new java.util.Date().getTime())+"','"+this.getState()+"')";
+        String query = "INSERT into application(applicantId, jobId, time, state)" +
+                "values(" + this.getApplicant().getId() + "," + 1 + ",'" + new Date(
+                new java.util.Date().getTime()) + "','" + this.getState() + "')";
         Database.query(query);
-        this.id = Database.getApplicationId(this.getApplicant().getId(),1);
+        this.id = Database.getApplicationId(this.getApplicant().getId(), 1);
 
     }
 

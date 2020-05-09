@@ -191,48 +191,51 @@ public class Applicant extends User implements Observer {
     }
 
     public void addUniversityDegree(UniversityDegree degree) {
+        this.universityDegrees.add(degree);
 
     }
 
     public void addCertification(Certification certification) {
-    }
-
-    public void addSkill(String skill) {
+        this.certifications.add(certification);
     }
 
     public void addLanguage(Language language) {
-        String query = "UPDATE applicant set Language = " + language + " Where email = " + this.getEmail();
+        String query = "UPDATE applicant set language = " + language + " Where email = " + this.getEmail();
         Database.query(query);
+        this.languages.add(language);
     }
 
     public void saveJob(Job job) {
     }
 
     public void removeApplication(Application application) {
-        String query = "DELETE FROM application Where id = " + this.getId();
+        String query = "DELETE FROM application Where applicantId = " + this.getId();
         Database.query(query);
+        this.applications.remove(application);
     }
 
     public void removeJobTypeTarget(JobType jobType) {
-
+        this.targetJobTypes.remove(jobType);
     }
 
     public void removeJobRoleTarget(JobRole jobRole) {
+        this.targetJobRoles.remove(jobRole);
     }
 
     public void removeTargetCity(City city) {
+        this.targetWorkCities.remove(city);
     }
 
     public void removeUniversityDegree(UniversityDegree degree) {
+        this.universityDegrees.remove(degree);
     }
 
     public void removeCertification(Certification certification) {
-    }
-
-    public void removeSkill(String skill) {
+        this.certifications.remove(certification);
     }
 
     public void removeLanguage(Language language) {
+        this.languages.remove(language);
     }
 
     public static Applicant getApplicant(int id) {
@@ -247,17 +250,13 @@ public class Applicant extends User implements Observer {
             String email = results.getString("email");
             String password = results.getString("password");
             File cv = null;
-//                  results.getBlob("cv");
-
             String nationality = results.getString("nationality");
             int cityId = results.getInt("cityId");
             boolean locatingAbility = results.getBoolean("locatingAbility");
             int targetSalary = results.getInt("targetSalary");
-//          EducationalLevel currentEducationalLevel = EducationalLevel.valueOf(results.getString("currentEducationalLevel"));
             String linkedInProfile = results.getString("linkedInProfile");
             String githubProfile = results.getString("githubProfile");
             String achievements = results.getString("achievements");
-//          AccountState accountState = AccountState.valueOf(results.getString("accountState"));
             EducationalLevel currentEducationalLevel = EducationalLevel.Bachelor;
             AccountState accountState = AccountState.valueOf(results.getString("accountState"));
 
@@ -274,11 +273,5 @@ public class Applicant extends User implements Observer {
         }
         return null;
 
-    }
-
-    public static void main(String[] args) {
-//        Applicant test = new Applicant("fady", "fady@gmail.com", "fady", AccountType.Applicant, AccountState.Active, null, null, null, Country.Egypt, City.Cairo, null, null, null, 6000, null, 0, EducationalLevel.Bachelor, null, null, null, null, null, null, null, null);
-        Database.init();
-        System.out.print(Database.getApplicantId("ziad@gmail.com"));
     }
 }

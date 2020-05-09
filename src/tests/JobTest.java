@@ -1,6 +1,10 @@
-package main;
+package tests;
 
 import enums.*;
+import main.Company;
+import main.Database;
+import main.Job;
+import main.Recruiter;
 
 import java.sql.Date;
 import java.sql.SQLException;

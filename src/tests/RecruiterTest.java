@@ -1,7 +1,11 @@
-package main;
+package tests;
 
 import enums.AccountState;
 import enums.AccountType;
+import main.Company;
+import main.Database;
+import main.Recruiter;
+import main.UserFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

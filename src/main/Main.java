@@ -2,14 +2,9 @@ package main;
 
 import enums.AccountType;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class main {
+public class Main {
     public static AccountType currentAccountType = null;
     public static Account currentAccount = null;
 
@@ -36,8 +31,8 @@ public class main {
                 password = input.nextLine();
 
                 if (applicant.login(email, password)) {
-                    main.currentAccount = applicant;
-                    main.currentAccountType = AccountType.Applicant;
+                    Main.currentAccount = applicant;
+                    Main.currentAccountType = AccountType.Applicant;
                     System.out.println("Hoooray! You are now logged in as: " + applicant.getName());
                 }
                 break;
@@ -51,8 +46,8 @@ public class main {
                 password = input.nextLine();
 
                 if (recruiter.login(email, password)) {
-                    main.currentAccount = recruiter;
-                    main.currentAccountType = AccountType.Recruiter;
+                    Main.currentAccount = recruiter;
+                    Main.currentAccountType = AccountType.Recruiter;
                     System.out.println("Hoooray! You are now logged in as: " + recruiter.getName());
                 }
                 break;
@@ -65,8 +60,8 @@ public class main {
                 password = input.nextLine();
 
                 if (admin.login(email, password)) {
-                    main.currentAccount = admin;
-                    main.currentAccountType = AccountType.Admin;
+                    Main.currentAccount = admin;
+                    Main.currentAccountType = AccountType.Admin;
                     System.out.println("Hoooray! You are now logged in as: " + admin.getName());
                 }
                 break;

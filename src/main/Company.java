@@ -109,7 +109,8 @@ public class Company {
             String website = result.getString("website");
             int adminId = result.getInt("adminId");
             // TODO: get admin object
-            company = new Company(overview, employeesAmount, new ArrayList<Job>(), address, field, new ArrayList<City>(), website);
+            company = new Company(overview, employeesAmount, new ArrayList<>(), address, field,
+                                  new ArrayList<>(), website);
         } catch (SQLException throwables) {
 //            throwables.printStackTrace();
         }

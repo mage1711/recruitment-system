@@ -15,7 +15,7 @@ public class JobReport extends Report {
     public JobReport() {
     }
 
-    public JobReport(int id ,User reporter, String description, Date time, Job victimJob) {
+    public JobReport(int id, User reporter, String description, Date time, Job victimJob) {
         super(reporter, description, time, ReportTypes.ReportOnJobPost);
         this.id = id;
         this.victimJob = victimJob;
@@ -38,15 +38,16 @@ public class JobReport extends Report {
     }
 
 
-    public static JobReport reportJop(int id,int userId, String description,int vId) {
+    public static JobReport reportJop(int id, int userId, String description, int vId) {
 
         String jobReport = "INSERT INTO `jobReport` (`id`, `userId`, `description`, `time`, " + "`victimJobId`)" +
-                "VALUES (NULL, '" + userId + "', '" + description + "', '" + new Date(new java.util.Date().getTime())+ "', '" + vId + "')";
+                "VALUES (NULL, '" + userId + "', '" + description + "', '" + new Date(
+                new java.util.Date().getTime()) + "', '" + vId + "')";
         Database.query(jobReport);
         return new JobReport();
     }
 
-    public static JobReport getReportWithId(int id){
+    public static JobReport getReportWithId(int id) {
         Database.init();
         JobReport report = null;
         Database.query("select * from jobReport where id = " + id);
@@ -55,20 +56,13 @@ public class JobReport extends Report {
         try {
             result.next();
             Applicant applicant = Applicant.getApplicant(result.getInt("userId"));
-            Job job  = Job.getJobWithId(result.getInt("victimJobId"));
-            report = new JobReport(result.getInt("id"),applicant , result.getString("description") , result.getDate("time") , job);
+            Job job = Job.getJobWithId(result.getInt("victimJobId"));
+            report = new JobReport(result.getInt("id"), applicant, result.getString("description"),
+                                   result.getDate("time"), job);
 
         } catch (SQLException throwables) {
             //throwables.printStackTrace();
         }
         return report;
-    }
-
-    public static void main(String[] args) {
-        Database.init();
-        JobReport jobReport = new JobReport();
-
-        //jobReport.reportJop(1, "testtttttttttttttt", 2);
-
     }
 }

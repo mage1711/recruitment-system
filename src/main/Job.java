@@ -186,10 +186,10 @@ public class Job {
     }
 
     public static void create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
-                             String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles,
-                             JobType jobType,
-                             String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
-                             int vacanciesCount) {
+                              String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles,
+                              JobType jobType,
+                              String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
+                              int vacanciesCount) {
         String query = "INSERT INTO `job` (`id`, `jobTitle`, `careerLevelNeeded`, `educationalLevelNeeded`, " +
                 "`jobRecruitements`, `jobDescription`, `jobType`, `salaryRange`, `cityId`, `postDate`, `companyId`, " +
                 "`recruiterId`, `vacanciesCount`) VALUES (NULL, '" + jobTitle + "', '" + careerLevelNeeded + "', '" +
@@ -222,7 +222,7 @@ public class Job {
 
     public static ArrayList<Job> getJobs(String query) {
         Database.query(query);
-        ArrayList<Job> jobs = new ArrayList<Job>();
+        ArrayList<Job> jobs = new ArrayList<>();
         Job currentJob;
         var result = Database.getResult();
         try {
@@ -247,7 +247,7 @@ public class Job {
                 Recruiter recruiter = Recruiter.getRecruiter(recruiterId);
                 int vacanciesCount = result.getInt("vacanciesCount");
                 currentJob = new Job(id, jobTitle, careerLevelNeeded, educationalLevelNeeded, jobRequirements,
-                                     jobDescription, new ArrayList<JobRole>(), jobType, salaryRange, city, postDate,
+                                     jobDescription, new ArrayList<>(), jobType, salaryRange, city, postDate,
                                      company, recruiter, vacanciesCount);
                 jobs.add(currentJob);
             }
@@ -255,15 +255,6 @@ public class Job {
             throwables.printStackTrace();
         }
         return jobs;
-    }
-
-
-    public static void main(String args[]) {
-        var jobs = Job.getAll();
-
-        for (Job job : jobs) {
-            System.out.println(job.getJobTitle());
-        }
     }
 }
 
