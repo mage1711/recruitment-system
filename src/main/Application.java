@@ -125,10 +125,6 @@ public class Application implements Subject {
 
     }
 
-    public int getId() {
-        return id;
-    }
-
     @Override
     public void registerObserver(Observer obj) {
         if (obj == null) throw new NullPointerException("Null Observer");

@@ -185,7 +185,7 @@ public class Job {
         }
     }
 
-    public static Job create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
+    public static void create(String jobTitle, CareerLevel careerLevelNeeded, EducationalLevel educationalLevel,
                              String jobRequirements, String jobDescription, ArrayList<JobRole> jobRoles,
                              JobType jobType,
                              String salaryRange, City location, Date postDate, Company company, Recruiter recruiter,
@@ -198,7 +198,6 @@ public class Job {
                 location) + "', '" + postDate + "', '" + company.getId() + "', '" +
                 recruiter.getId() + "', '" + vacanciesCount + "')";
         Database.query(query);
-        return new Job();
     }
 
     public static Job getJobWithId(int id) {
@@ -222,7 +221,6 @@ public class Job {
     }
 
     public static ArrayList<Job> getJobs(String query) {
-        Database.init();
         Database.query(query);
         ArrayList<Job> jobs = new ArrayList<Job>();
         Job currentJob;

@@ -111,7 +111,7 @@ public class Company {
             // TODO: get admin object
             company = new Company(overview, employeesAmount, new ArrayList<Job>(), address, field, new ArrayList<City>(), website);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+//            throwables.printStackTrace();
         }
         return company;
 
