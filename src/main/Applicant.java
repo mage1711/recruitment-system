@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 public class Applicant extends User implements Observer {
     private Date birthDate;
     private String gender;
@@ -36,7 +37,44 @@ public class Applicant extends User implements Observer {
     public Applicant() {
     }
 
-    public Applicant(String name, String email, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
+    public Applicant(String name, String email, int id, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
+                     Country currentCountry, City currentCity, Boolean locatingAbility,
+                     ArrayList<JobType> targetJobTypes,
+                     ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
+                     ArrayList<City> targetWorkCities, int experienceDuration,
+                     EducationalLevel currentEducationalLevel, ArrayList<UniversityDegree> universityDegrees,
+                     ArrayList<Certification> certifications, ArrayList<String> skills,
+                     ArrayList<Language> languages, String linkedInProfile, String githubProfile,
+                     String achievements, ArrayList<Job> savedJobs) {
+        super(name, email, type, accountState);
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.CV = CV;
+        this.applications = applications;
+        this.nationality = nationality;
+        this.currentCountry = currentCountry;
+        this.currentCity = currentCity;
+        this.locatingAbility = locatingAbility;
+
+        this.targetJobTypes = targetJobTypes;
+        this.targetJobRoles = targetJobRoles;
+        this.minSalaryTarget = minSalaryTarget;
+        this.targetWorkCities = targetWorkCities;
+        this.experienceDuration = experienceDuration;
+        this.currentEducationalLevel = currentEducationalLevel;
+        this.universityDegrees = universityDegrees;
+        this.certifications = certifications;
+
+        this.languages = languages;
+        this.linkedInProfile = linkedInProfile;
+        this.githubProfile = githubProfile;
+        this.achievements = achievements;
+        this.savedJobs = savedJobs;
+       this.setId(id);
+
+
+    }
+    public Applicant(String name, String email,String password, AccountType type, AccountState accountState, File CV, ArrayList<Application> applications, String nationality,
                      Country currentCountry, City currentCity, Boolean locatingAbility,
                      ArrayList<JobType> targetJobTypes,
                      ArrayList<JobRole> targetJobRoles, int minSalaryTarget,
@@ -88,6 +126,19 @@ public class Applicant extends User implements Observer {
         this.notifyBehaviour.sendNotification(updatedApplication);
     }
 
+    public void commitToDatabase(String password) {
+        String query = "INSERT into applicant(name, email, password, targetSalary, " +
+                "currentEducationalLevel,accountState) " +
+                "values('"+this.getName()+"','"+this.getEmail()+"','"+ password+"',"+this.getMinSalaryTarget()
+                + ",'"+this.currentEducationalLevel+"','"+AccountState.Active+"')";
+        Database.query(query);
+
+    }
+
+    public int getMinSalaryTarget() {
+        return minSalaryTarget;
+    }
+
     public void addApplication(Application application) {
         applications.add(application);
     }
@@ -105,7 +156,7 @@ public class Applicant extends User implements Observer {
 
     public void addTargetCity(City city) {
 
-        int cityId = 1;
+        int cityId = Database.getCityId(city);
         String query = "UPDATE applicant set cityId = " + cityId + " Where email = " + this.getEmail();
         Database.query(query);
     }
@@ -180,7 +231,8 @@ public class Applicant extends User implements Observer {
 //          AccountState accountState = AccountState.valueOf(results.getString("accountState"));
             EducationalLevel currentEducationalLevel = EducationalLevel.Bachelor;
             AccountState accountState = AccountState.valueOf(results.getString("accountState"));
-            Applicant applicant = new Applicant(name, email, AccountType.Applicant, accountState, cv, null, nationality, Country.Egypt, City.Cairo, locatingAbility, null, null, targetSalary, null, 0, currentEducationalLevel, null, null, null, null, linkedInProfile, githubProfile, achievements, null);
+
+            Applicant applicant = new Applicant(name, email, id, AccountType.Applicant, accountState, cv, null, nationality, Country.Egypt, City.Cairo, locatingAbility, Database.getJobTypes(id, "applicantTargetJobTypes"), Database.getJobRole(id, "applicantTargetJobRoles"), targetSalary, null, 0, currentEducationalLevel, null, null, null, null, linkedInProfile, githubProfile, achievements, null);
 
             return applicant;
 
@@ -193,8 +245,7 @@ public class Applicant extends User implements Observer {
     }
 
     public static void main(String[] args) {
-        Database.init();
-        Applicant x = Applicant.getApplicant(1);
-        System.out.print(x.getEmail());
+//        Applicant test = new Applicant("fady", "fady@gmail.com", "fady", AccountType.Applicant, AccountState.Active, null, null, null, Country.Egypt, City.Cairo, null, null, null, 6000, null, 0, EducationalLevel.Bachelor, null, null, null, null, null, null, null, null);
+
     }
 }

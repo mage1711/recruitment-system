@@ -248,7 +248,7 @@ public class Job {
                 int recruiterId = result.getInt("recruiterId");
                 Recruiter recruiter = Recruiter.getRecruiter(recruiterId);
                 int vacanciesCount = result.getInt("vacanciesCount");
-                currentJob = new Job(jobTitle, careerLevelNeeded, educationalLevelNeeded, jobRequirements,
+                currentJob = new Job(id, jobTitle, careerLevelNeeded, educationalLevelNeeded, jobRequirements,
                                      jobDescription, new ArrayList<JobRole>(), jobType, salaryRange, city, postDate,
                                      company, recruiter, vacanciesCount);
                 jobs.add(currentJob);

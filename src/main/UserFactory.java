@@ -27,7 +27,7 @@ public class UserFactory {
         }
     }
 
-    public User createUser(String name, String email, AccountType type, AccountState accountState, File CV,
+    public User createUser(String name, String email, String password, AccountType type, AccountState accountState, File CV,
                            ArrayList<Application> applications, String nationality,
                            Country currentCountry, City currentCity, Boolean locatingAbility,
                            ArrayList<JobType> targetJobTypes,
@@ -37,7 +37,7 @@ public class UserFactory {
                            ArrayList<Certification> certifications, ArrayList<String> skills,
                            ArrayList<Language> languages, String linkedInProfile, String githubProfile,
                            String achievements, ArrayList<Job> savedJobs) {
-        return new Applicant(name, email, type, accountState, CV, applications, nationality,
+        return new Applicant(name, email, password, type, accountState, CV, applications, nationality,
                              currentCountry, currentCity, locatingAbility, targetJobTypes, targetJobRoles,
                              minSalaryTarget,
                              targetWorkCities, experienceDuration, currentEducationalLevel, universityDegrees,
